@@ -68,7 +68,7 @@ const TestimonialsSection = () => {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: 'easeOut' },
+      transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
     exit: (dir: number) => ({
       x: dir > 0 ? -300 : 300,
