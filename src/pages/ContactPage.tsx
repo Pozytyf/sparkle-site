@@ -10,7 +10,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const ContactPage = () => {
   const { toast } = useToast();
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
@@ -29,7 +29,6 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -108,8 +107,8 @@ const ContactPage = () => {
                           <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder={t('contact.phonePlaceholder')} />
                         </div>
                         <div>
-                          <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">Sujet *</label>
-                          <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} placeholder="Sujet" required />
+                          <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">{t('contact.subject')} *</label>
+                          <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} placeholder={t('contact.subjectPlaceholder')} required />
                         </div>
                       </div>
                       <div>
@@ -125,6 +124,39 @@ const ContactPage = () => {
               </motion.div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Google Maps Section */}
+      <section className="section-padding bg-muted">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <span className="inline-block text-accent font-semibold text-sm uppercase tracking-wider mb-4">{t('contact.findUs')}</span>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">{t('contact.mapTitle')}</h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl overflow-hidden shadow-xl border border-border"
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-3.995!3d5.305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1eb5a4567e493%3A0x7f8e5b3c5d6e7f8a!2sMarcory%2C%20Abidjan%2C%20C%C3%B4te%20d&#39;Ivoire!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="HP Logistics - Abidjan Marcory"
+            />
+          </motion.div>
         </div>
       </section>
     </Layout>
