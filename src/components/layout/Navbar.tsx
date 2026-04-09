@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Settings, LogOut } from 'lucide-react';
+import { Menu, X, Phone, LogOut, Shield, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import logo from '@/assets/logo.png';
 
@@ -12,6 +13,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { t } = useLanguage();
+  const { user, isAdmin, signOut } = useAuth();
 
   const navLinks = [
     { name: t('nav.home'), path: '/' },
@@ -40,13 +42,7 @@ const Navbar = () => {
       <div className="container-custom">
         <nav className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <motion.img
-              src={logo}
-              alt="HP Logistics"
-              className="h-10 md:h-12"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-            />
+            <motion.img src={logo} alt="HP Logistics" className="h-10 md:h-12" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} />
           </Link>
 
           {/* Desktop Navigation */}
@@ -61,26 +57,40 @@ const Navbar = () => {
               >
                 {link.name}
                 {location.pathname === link.path && (
-                  <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
+                  <motion.div layoutId="navbar-indicator" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full" transition={{ type: 'spring', stiffness: 300, damping: 30 }} />
                 )}
               </Link>
             ))}
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
             <LanguageSelector />
             <a href="tel:+2250778750064" className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Phone className="h-4 w-4" />
               +225 07 87 50 60 64
             </a>
-            <Button asChild variant="accent" size="sm">
-              <Link to="/contact">{t('nav.contactUs')}</Link>
-            </Button>
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" onClick={signOut} className="gap-1">
+                  <LogOut className="h-4 w-4" /> {t('auth.logout')}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/login">{t('auth.login')}</Link>
+                </Button>
+                <Button asChild variant="accent" size="sm">
+                  <Link to="/register">{t('auth.register')}</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,41 +105,40 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden bg-background rounded-lg mt-4 shadow-lg"
-            >
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className="lg:hidden overflow-hidden bg-background rounded-lg mt-4 shadow-lg">
               <div className="flex flex-col py-4">
                 {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.path}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Link
-                      to={link.path}
-                      className={`px-6 py-3 text-base font-medium transition-colors block ${
-                        location.pathname === link.path
-                          ? 'text-accent bg-accent/10'
-                          : 'text-foreground hover:bg-muted'
-                      }`}
-                    >
+                  <motion.div key={link.path} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
+                    <Link to={link.path} className={`px-6 py-3 text-base font-medium transition-colors block ${location.pathname === link.path ? 'text-accent bg-accent/10' : 'text-foreground hover:bg-muted'}`}>
                       {link.name}
                     </Link>
                   </motion.div>
                 ))}
                 <div className="px-6 pt-4 flex flex-col gap-3">
                   <a href="tel:+2250778750064" className="flex items-center gap-2 text-foreground">
-                    <Phone className="h-4 w-4" />
-                    +225 07 87 50 60 64
+                    <Phone className="h-4 w-4" /> +225 07 87 50 60 64
                   </a>
-                  <Button asChild variant="accent" className="w-full">
-                    <Link to="/contact">{t('nav.contactUs')}</Link>
-                  </Button>
+                  {user ? (
+                    <>
+                      {isAdmin && (
+                        <Button asChild variant="outline" className="w-full">
+                          <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
+                        </Button>
+                      )}
+                      <Button variant="ghost" className="w-full" onClick={signOut}>
+                        <LogOut className="h-4 w-4 mr-1" /> {t('auth.logout')}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button asChild variant="ghost" className="w-full">
+                        <Link to="/login">{t('auth.login')}</Link>
+                      </Button>
+                      <Button asChild variant="accent" className="w-full">
+                        <Link to="/register">{t('auth.register')}</Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

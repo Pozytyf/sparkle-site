@@ -4,6 +4,7 @@ import { ArrowRight, Truck, Plane, Ship, Train, CheckCircle } from 'lucide-react
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import ParallaxDivider from '@/components/ParallaxDivider';
 import serviceRoad from '@/assets/service-road.jpg';
 import serviceAir from '@/assets/service-air.jpg';
 import serviceMaritime from '@/assets/service-maritime.jpg';
@@ -46,6 +47,8 @@ const ServicesPage = () => {
           </motion.div>
         </div>
       </section>
+
+      <ParallaxDivider imageUrl={serviceRoad} height="200px" overlayOpacity={0.7} />
 
       {/* Services Detail */}
       <section className="section-padding">
