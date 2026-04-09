@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '@/integrations/supabase/client';
 import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
@@ -29,10 +30,20 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const { error } = await supabase.from('contact_messages').insert({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || null,
+      subject: formData.subject || null,
+      message: formData.message,
+    });
     setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({ title: t('contact.success'), description: t('contact.successDesc') });
+    if (error) {
+      toast({ title: 'Erreur', description: error.message, variant: 'destructive' });
+    } else {
+      setIsSubmitted(true);
+      toast({ title: t('contact.success'), description: t('contact.successDesc') });
+    }
   };
 
   return (
