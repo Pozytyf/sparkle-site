@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, FileText, MessageSquare, BarChart3, Eye, EyeOff, Trash2, Shield } from 'lucide-react';
+import { Users, FileText, MessageSquare, BarChart3, Eye, EyeOff, Trash2, Shield, Camera } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,8 +10,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import AlbumForm from '@/components/realisations/AlbumForm';
 
-type Tab = 'dashboard' | 'users' | 'content' | 'messages';
+type Tab = 'dashboard' | 'users' | 'content' | 'messages' | 'albums';
 
 const AdminPage = () => {
   const { t } = useLanguage();
@@ -24,6 +25,7 @@ const AdminPage = () => {
     { id: 'users' as Tab, label: t('admin.users'), icon: Users },
     { id: 'content' as Tab, label: t('admin.content'), icon: FileText },
     { id: 'messages' as Tab, label: t('admin.messages'), icon: MessageSquare },
+    { id: 'albums' as Tab, label: t('admin.albums'), icon: Camera },
   ];
 
   return (
@@ -61,6 +63,7 @@ const AdminPage = () => {
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'content' && <ContentTab />}
           {activeTab === 'messages' && <MessagesTab />}
+          {activeTab === 'albums' && <AlbumsTab />}
         </div>
       </section>
     </Layout>
@@ -267,6 +270,57 @@ const MessagesTab = () => {
           </motion.div>
         ))
       )}
+    </div>
+  );
+};
+
+const AlbumsTab = () => {
+  const { t } = useLanguage();
+  const { toast } = useToast();
+  const [albums, setAlbums] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchAlbums = async () => {
+    const { data } = await supabase.from('albums').select('*').order('created_at', { ascending: false });
+    setAlbums(data || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchAlbums(); }, []);
+
+  const deleteAlbum = async (id: string) => {
+    await supabase.from('album_photos').delete().eq('album_id', id);
+    await supabase.from('albums').delete().eq('id', id);
+    toast({ title: 'Album supprimé' });
+    fetchAlbums();
+  };
+
+  if (loading) return <div className="space-y-4">{[...Array(3)].map((_, i) => <Skeleton key={i} className="h-20" />)}</div>;
+
+  return (
+    <div className="space-y-6">
+      <AlbumForm onSuccess={fetchAlbums} />
+
+      <h3 className="font-heading text-lg font-bold text-foreground">Albums existants ({albums.length})</h3>
+
+      {albums.map((album) => (
+        <motion.div key={album.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-card rounded-xl p-4 border border-border flex gap-4 items-center">
+          {album.cover_image_url ? (
+            <img src={album.cover_image_url} alt={album.title} className="h-16 w-16 rounded-lg object-cover flex-shrink-0" />
+          ) : (
+            <div className="h-16 w-16 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+              <Camera className="h-6 w-6 text-muted-foreground" />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-heading font-bold text-foreground truncate">{album.title}</h4>
+            <p className="text-sm text-muted-foreground">{album.category} · {new Date(album.created_at).toLocaleDateString()}</p>
+          </div>
+          <Button variant="destructive" size="sm" onClick={() => deleteAlbum(album.id)}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </motion.div>
+      ))}
     </div>
   );
 };

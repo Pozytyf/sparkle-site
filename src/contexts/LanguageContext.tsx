@@ -15,6 +15,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.services': 'Nos Services',
     'nav.advantages': 'Nos Atouts',
     'nav.contact': 'Contact',
+    'nav.realisations': 'Réalisations',
     'nav.contactUs': 'Contactez-nous',
     'hero.badge': 'Transit & Logistique Internationale',
     'hero.title1': 'HP LOGISTICS –',
@@ -181,6 +182,7 @@ const translations: Record<Language, Record<string, string>> = {
     'admin.noMessages': 'Aucun message pour le moment.',
     'admin.markRead': 'Marquer comme lu',
     'admin.markUnread': 'Marquer comme non lu',
+    'admin.albums': 'Albums',
   },
   en: {
     'nav.home': 'Home',
@@ -188,6 +190,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.services': 'Our Services',
     'nav.advantages': 'Our Strengths',
     'nav.contact': 'Contact',
+    'nav.realisations': 'Projects',
     'nav.contactUs': 'Contact Us',
     'hero.badge': 'International Transit & Logistics',
     'hero.title1': 'HP LOGISTICS –',
@@ -354,6 +357,7 @@ const translations: Record<Language, Record<string, string>> = {
     'admin.noMessages': 'No messages yet.',
     'admin.markRead': 'Mark as read',
     'admin.markUnread': 'Mark as unread',
+    'admin.albums': 'Albums',
   },
 };
 
