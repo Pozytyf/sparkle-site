@@ -279,6 +279,7 @@ const AlbumsTab = () => {
   const { toast } = useToast();
   const [albums, setAlbums] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingAlbum, setEditingAlbum] = useState<any | null>(null);
 
   const fetchAlbums = async () => {
     const { data } = await supabase.from('albums').select('*').order('created_at', { ascending: false });
@@ -299,7 +300,11 @@ const AlbumsTab = () => {
 
   return (
     <div className="space-y-6">
-      <AlbumForm onSuccess={fetchAlbums} />
+      <AlbumForm
+        onSuccess={fetchAlbums}
+        editAlbum={editingAlbum}
+        onCancelEdit={() => setEditingAlbum(null)}
+      />
 
       <h3 className="font-heading text-lg font-bold text-foreground">Albums existants ({albums.length})</h3>
 
@@ -316,9 +321,14 @@ const AlbumsTab = () => {
             <h4 className="font-heading font-bold text-foreground truncate">{album.title}</h4>
             <p className="text-sm text-muted-foreground">{album.category} · {new Date(album.created_at).toLocaleDateString()}</p>
           </div>
-          <Button variant="destructive" size="sm" onClick={() => deleteAlbum(album.id)}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => setEditingAlbum(album)}>
+              {t('admin.edit')}
+            </Button>
+            <Button variant="destructive" size="sm" onClick={() => deleteAlbum(album.id)}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </motion.div>
       ))}
     </div>
