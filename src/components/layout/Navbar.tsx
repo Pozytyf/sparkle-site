@@ -16,12 +16,13 @@ const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
 
   const navLinks = [
-    { name: t('nav.home'), path: '/' },
-    { name: t('nav.about'), path: '/a-propos' },
-    { name: t('nav.services'), path: '/services' },
-    { name: t('nav.advantages'), path: '/atouts' },
-    { name: t('nav.realisations'), path: '/realisations' },
-    { name: t('nav.contact'), path: '/contact' },
+    { name: t('nav.home.short'), path: '/' },
+    { name: t('nav.about.short'), path: '/a-propos' },
+    { name: t('nav.services.short'), path: '/services' },
+    { name: t('nav.advantages.short'), path: '/atouts' },
+    { name: t('nav.realisations.short'), path: '/realisations' },
+    { name: t('nav.quote.short'), path: '/devis' },
+    { name: t('nav.contact.short'), path: '/contact' },
   ];
 
   useEffect(() => {
@@ -73,6 +74,9 @@ const Navbar = () => {
             </a>
             {user ? (
               <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/espace-client"><User className="h-4 w-4 mr-1" /> {t('nav.portal.short')}</Link>
+                </Button>
                 {isAdmin && (
                   <Button asChild variant="outline" size="sm">
                     <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
@@ -121,6 +125,9 @@ const Navbar = () => {
                   </a>
                   {user ? (
                     <>
+                      <Button asChild variant="outline" className="w-full">
+                        <Link to="/espace-client"><User className="h-4 w-4 mr-1" /> {t('nav.portal.short')}</Link>
+                      </Button>
                       {isAdmin && (
                         <Button asChild variant="outline" className="w-full">
                           <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>

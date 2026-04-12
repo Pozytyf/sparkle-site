@@ -17,6 +17,8 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AdminPage from "./pages/AdminPage";
 import RealisationsPage from "./pages/RealisationsPage";
+import QuotePage from "./pages/QuotePage";
+import ClientPortalPage from "./pages/ClientPortalPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/atouts" element={<AdvantagesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/realisations" element={<RealisationsPage />} />
+              <Route path="/devis" element={<QuotePage />} />
+              <Route path="/espace-client" element={<ProtectedRoute><ClientPortalPage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
