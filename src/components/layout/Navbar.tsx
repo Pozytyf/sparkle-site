@@ -74,6 +74,9 @@ const Navbar = () => {
             </a>
             {user ? (
               <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/espace-client"><User className="h-4 w-4 mr-1" /> {t('nav.portal.short')}</Link>
+                </Button>
                 {isAdmin && (
                   <Button asChild variant="outline" size="sm">
                     <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
