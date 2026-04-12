@@ -16,12 +16,13 @@ const Navbar = () => {
   const { user, isAdmin, signOut } = useAuth();
 
   const navLinks = [
-    { name: t('nav.home'), path: '/' },
-    { name: t('nav.about'), path: '/a-propos' },
-    { name: t('nav.services'), path: '/services' },
-    { name: t('nav.advantages'), path: '/atouts' },
-    { name: t('nav.realisations'), path: '/realisations' },
-    { name: t('nav.contact'), path: '/contact' },
+    { name: t('nav.home.short'), path: '/' },
+    { name: t('nav.about.short'), path: '/a-propos' },
+    { name: t('nav.services.short'), path: '/services' },
+    { name: t('nav.advantages.short'), path: '/atouts' },
+    { name: t('nav.realisations.short'), path: '/realisations' },
+    { name: t('nav.quote.short'), path: '/devis' },
+    { name: t('nav.contact.short'), path: '/contact' },
   ];
 
   useEffect(() => {
