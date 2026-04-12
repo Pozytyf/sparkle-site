@@ -115,6 +115,33 @@ export type Database = {
         }
         Relationships: []
       }
+      partners: {
+        Row: {
+          created_at: string
+          id: string
+          logo_url: string | null
+          name: string
+          sort_order: number | null
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name: string
+          sort_order?: number | null
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+          sort_order?: number | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -139,6 +166,140 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      quote_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          destination: string
+          details: string | null
+          email: string
+          goods_type: string
+          id: string
+          name: string
+          origin: string
+          phone: string | null
+          status: string
+          transport_mode: string
+          updated_at: string
+          user_id: string | null
+          weight: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          destination: string
+          details?: string | null
+          email: string
+          goods_type: string
+          id?: string
+          name: string
+          origin: string
+          phone?: string | null
+          status?: string
+          transport_mode: string
+          updated_at?: string
+          user_id?: string | null
+          weight?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          destination?: string
+          details?: string | null
+          email?: string
+          goods_type?: string
+          id?: string
+          name?: string
+          origin?: string
+          phone?: string | null
+          status?: string
+          transport_mode?: string
+          updated_at?: string
+          user_id?: string | null
+          weight?: string | null
+        }
+        Relationships: []
+      }
+      shipment_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          location: string | null
+          shipment_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          shipment_id: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          shipment_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipment_events_shipment_id_fkey"
+            columns: ["shipment_id"]
+            isOneToOne: false
+            referencedRelation: "shipments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shipments: {
+        Row: {
+          created_at: string
+          description: string | null
+          destination: string
+          estimated_delivery: string | null
+          id: string
+          origin: string
+          reference: string
+          status: string
+          transport_mode: string
+          updated_at: string
+          user_id: string
+          weight: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          destination: string
+          estimated_delivery?: string | null
+          id?: string
+          origin: string
+          reference: string
+          status?: string
+          transport_mode?: string
+          updated_at?: string
+          user_id: string
+          weight?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          destination?: string
+          estimated_delivery?: string | null
+          id?: string
+          origin?: string
+          reference?: string
+          status?: string
+          transport_mode?: string
+          updated_at?: string
+          user_id?: string
+          weight?: string | null
         }
         Relationships: []
       }
@@ -175,6 +336,42 @@ export type Database = {
           title?: string | null
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          company: string | null
+          content: string
+          created_at: string
+          id: string
+          name: string
+          rating: number
+          role: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          company?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          name: string
+          rating?: number
+          role?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          company?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          name?: string
+          rating?: number
+          role?: string | null
+          status?: string
+          user_id?: string | null
         }
         Relationships: []
       }
