@@ -37,23 +37,23 @@ const Navbar = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md shadow-md py-2'
-          : 'bg-background/80 backdrop-blur-sm py-4'
+          ? 'bg-background/95 backdrop-blur-md shadow-md py-1.5'
+          : 'bg-background/80 backdrop-blur-sm py-3'
       }`}
     >
       <div className="container-custom">
         <nav className="flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <motion.img src={logo} alt="HP Logistics" className="h-10 md:h-12" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} />
+          <Link to="/" className="flex items-center shrink-0">
+            <motion.img src={logo} alt="HP Logistics" className="h-8 md:h-10" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-medium transition-colors duration-300 hover:text-accent ${
+                className={`relative text-[13px] font-medium transition-colors duration-200 hover:text-accent whitespace-nowrap ${
                   location.pathname === link.path ? 'text-accent' : 'text-foreground'
                 }`}
               >
@@ -65,44 +65,45 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Desktop Right */}
+          <div className="hidden lg:flex items-center gap-2">
             <LanguageSelector />
-            <a href="tel:+2250778750064" className="flex items-center gap-2 text-sm font-medium text-foreground">
-              <Phone className="h-4 w-4" />
-              +225 07 87 50 60 64
+            <a href="tel:+2250778750064" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors ml-1">
+              <Phone className="h-3.5 w-3.5" />
+              <span className="hidden xl:inline">+225 07 87 50 60 64</span>
             </a>
+            <div className="w-px h-5 bg-border mx-1" />
             {user ? (
               <>
-                <Button asChild variant="ghost" size="sm">
-                  <Link to="/espace-client"><User className="h-4 w-4 mr-1" /> {t('nav.portal.short')}</Link>
+                <Button asChild variant="ghost" size="sm" className="h-8 px-2.5 text-xs">
+                  <Link to="/espace-client"><User className="h-3.5 w-3.5" /></Link>
                 </Button>
                 {isAdmin && (
-                  <Button asChild variant="outline" size="sm">
-                    <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
+                  <Button asChild variant="ghost" size="sm" className="h-8 px-2.5 text-xs">
+                    <Link to="/admin"><Shield className="h-3.5 w-3.5" /></Link>
                   </Button>
                 )}
-                <Button variant="ghost" size="sm" onClick={signOut} className="gap-1">
-                  <LogOut className="h-4 w-4" /> {t('auth.logout')}
+                <Button variant="ghost" size="sm" onClick={signOut} className="h-8 px-2.5 text-xs">
+                  <LogOut className="h-3.5 w-3.5" />
                 </Button>
               </>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm">
+                <Button asChild variant="ghost" size="sm" className="h-8 px-3 text-xs">
                   <Link to="/login">{t('auth.login')}</Link>
                 </Button>
-                <Button asChild variant="accent" size="sm">
+                <Button asChild variant="accent" size="sm" className="h-8 px-3 text-xs">
                   <Link to="/register">{t('auth.register')}</Link>
                 </Button>
               </>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2">
+          {/* Mobile */}
+          <div className="lg:hidden flex items-center gap-1.5">
             <LanguageSelector />
-            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-foreground" aria-label="Toggle menu">
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <button onClick={() => setIsOpen(!isOpen)} className="p-1.5 text-foreground" aria-label="Toggle menu">
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </nav>
@@ -110,42 +111,43 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className="lg:hidden overflow-hidden bg-background rounded-lg mt-4 shadow-lg">
-              <div className="flex flex-col py-4">
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25 }} className="lg:hidden overflow-hidden bg-background rounded-lg mt-2 shadow-lg border border-border">
+              <div className="flex flex-col py-2">
                 {navLinks.map((link, index) => (
-                  <motion.div key={link.path} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
-                    <Link to={link.path} className={`px-6 py-3 text-base font-medium transition-colors block ${location.pathname === link.path ? 'text-accent bg-accent/10' : 'text-foreground hover:bg-muted'}`}>
+                  <motion.div key={link.path} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }}>
+                    <Link to={link.path} className={`px-5 py-2.5 text-sm font-medium transition-colors block ${location.pathname === link.path ? 'text-accent bg-accent/10' : 'text-foreground hover:bg-muted'}`}>
                       {link.name}
                     </Link>
                   </motion.div>
                 ))}
-                <div className="px-6 pt-4 flex flex-col gap-3">
-                  <a href="tel:+2250778750064" className="flex items-center gap-2 text-foreground">
+                <div className="border-t border-border mx-4 my-2" />
+                <div className="px-5 flex flex-col gap-2">
+                  <a href="tel:+2250778750064" className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Phone className="h-4 w-4" /> +225 07 87 50 60 64
                   </a>
                   {user ? (
-                    <>
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to="/espace-client"><User className="h-4 w-4 mr-1" /> {t('nav.portal.short')}</Link>
+                    <div className="flex gap-2">
+                      <Button asChild variant="outline" size="sm" className="flex-1 h-9 text-xs">
+                        <Link to="/espace-client"><User className="h-3.5 w-3.5 mr-1" /> {t('nav.portal.short')}</Link>
                       </Button>
                       {isAdmin && (
-                        <Button asChild variant="outline" className="w-full">
-                          <Link to="/admin"><Shield className="h-4 w-4 mr-1" /> Admin</Link>
+                        <Button asChild variant="outline" size="sm" className="h-9 text-xs px-3">
+                          <Link to="/admin"><Shield className="h-3.5 w-3.5" /></Link>
                         </Button>
                       )}
-                      <Button variant="ghost" className="w-full" onClick={signOut}>
-                        <LogOut className="h-4 w-4 mr-1" /> {t('auth.logout')}
+                      <Button variant="ghost" size="sm" onClick={signOut} className="h-9 text-xs px-3">
+                        <LogOut className="h-3.5 w-3.5" />
                       </Button>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <Button asChild variant="ghost" className="w-full">
+                    <div className="flex gap-2">
+                      <Button asChild variant="ghost" size="sm" className="flex-1 h-9 text-xs">
                         <Link to="/login">{t('auth.login')}</Link>
                       </Button>
-                      <Button asChild variant="accent" className="w-full">
+                      <Button asChild variant="accent" size="sm" className="flex-1 h-9 text-xs">
                         <Link to="/register">{t('auth.register')}</Link>
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
