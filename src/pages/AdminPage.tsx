@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, FileText, MessageSquare, BarChart3, Eye, EyeOff, Trash2, Shield, Camera, Star, Package, Handshake, Check, X, Upload } from 'lucide-react';
+import { Users, FileText, MessageSquare, BarChart3, Eye, EyeOff, Trash2, Shield, Camera, Star, Package, Handshake, Check, X, Upload, Image as ImageIcon, Palette } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,8 +11,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import AlbumForm from '@/components/realisations/AlbumForm';
+import HeroBannerManager from '@/components/admin/HeroBannerManager';
+import SiteContentManager from '@/components/admin/SiteContentManager';
 
-type Tab = 'dashboard' | 'users' | 'content' | 'messages' | 'albums' | 'testimonials' | 'quotes' | 'shipments' | 'partners';
+type Tab = 'dashboard' | 'users' | 'content' | 'messages' | 'albums' | 'testimonials' | 'quotes' | 'shipments' | 'partners' | 'hero' | 'cms';
 
 const AdminPage = () => {
   const { t } = useLanguage();
