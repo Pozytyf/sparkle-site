@@ -5,25 +5,38 @@ import { ArrowRight, Ship, Plane, Truck, ChevronLeft, ChevronRight } from 'lucid
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCountUp } from '@/hooks/useCountUp';
+import { supabase } from '@/integrations/supabase/client';
 import heroImage from '@/assets/hero-logistics.jpg';
 import serviceRoad from '@/assets/service-road.jpg';
 import serviceMaritime from '@/assets/service-maritime.jpg';
 import serviceAir from '@/assets/service-air.jpg';
 
-const heroSlides = [heroImage, serviceRoad, serviceMaritime, serviceAir];
+const defaultSlides = [heroImage, serviceRoad, serviceMaritime, serviceAir];
 
 const HeroSection = () => {
   const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [heroSlides, setHeroSlides] = useState<string[]>(defaultSlides);
   const stat1 = useCountUp(10, 2000);
   const stat2 = useCountUp(500, 2500);
+
+  // Fetch dynamic slides from DB
+  useEffect(() => {
+    const fetchSlides = async () => {
+      const { data } = await supabase.from('hero_slides').select('image_url').order('sort_order');
+      if (data && data.length > 0) {
+        setHeroSlides(data.map(s => s.image_url));
+      }
+    };
+    fetchSlides();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [heroSlides.length]);
 
   const goToSlide = (index: number) => setCurrentSlide(index);
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
