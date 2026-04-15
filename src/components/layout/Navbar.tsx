@@ -53,7 +53,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-[13px] font-medium transition-colors duration-200 hover:text-accent whitespace-nowrap ${
+                className={`relative text-sm font-medium transition-colors duration-200 hover:text-accent whitespace-nowrap ${
                   location.pathname === link.path ? 'text-accent' : 'text-foreground'
                 }`}
               >
@@ -68,7 +68,7 @@ const Navbar = () => {
           {/* Desktop Right */}
           <div className="hidden lg:flex items-center gap-2">
             <LanguageSelector />
-            <a href="tel:+2250778750064" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors ml-1">
+            <a href="tel:+2250778750064" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors ml-1">
               <Phone className="h-3.5 w-3.5" />
               <span className="hidden xl:inline">+225 07 87 50 60 64</span>
             </a>

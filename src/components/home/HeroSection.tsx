@@ -123,7 +123,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-4 py-2 bg-accent/90 text-accent-foreground text-sm font-semibold rounded-full mb-6 animate-bounce-subtle">
+            <span className="inline-block px-5 py-2.5 bg-accent text-accent-foreground text-base font-bold rounded-full mb-8 shadow-lg shadow-accent/30">
               {t('hero.badge')}
             </span>
           </motion.div>
@@ -132,7 +132,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6"
+            className="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground leading-tight mb-8 drop-shadow-lg"
           >
             {t('hero.title1')}{' '}
             <span className="text-gradient">{t('hero.title2')}</span> {t('hero.title3')}
@@ -142,7 +142,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-primary-foreground/90 mb-8 leading-relaxed"
+            className="text-xl md:text-2xl text-primary-foreground/90 mb-10 leading-relaxed drop-shadow-sm"
           >
             {t('hero.description')}
           </motion.p>
