@@ -2,30 +2,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const LanguageSelector = () => {
   const { language, setLanguage } = useLanguage();
+  const next = language === 'fr' ? 'en' : 'fr';
 
   return (
-    <div className="flex items-center gap-1 bg-muted rounded-full p-1">
-      <button
-        onClick={() => setLanguage('fr')}
-        className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 ${
-          language === 'fr'
-            ? 'bg-accent text-accent-foreground shadow-sm'
-            : 'text-muted-foreground hover:text-foreground'
-        }`}
-      >
-        FR
-      </button>
-      <button
-        onClick={() => setLanguage('en')}
-        className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 ${
-          language === 'en'
-            ? 'bg-accent text-accent-foreground shadow-sm'
-            : 'text-muted-foreground hover:text-foreground'
-        }`}
-      >
-        EN
-      </button>
-    </div>
+    <button
+      onClick={() => setLanguage(next)}
+      className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-200 px-1.5 py-0.5 rounded border border-border hover:border-accent"
+    >
+      {next === 'en' ? 'EN' : 'FR'}
+    </button>
   );
 };
 
