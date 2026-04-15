@@ -24,6 +24,8 @@ const AdminPage = () => {
 
   const tabs = [
     { id: 'dashboard' as Tab, label: t('admin.dashboard'), icon: BarChart3 },
+    { id: 'hero' as Tab, label: 'Bannière', icon: ImageIcon },
+    { id: 'cms' as Tab, label: 'CMS', icon: Palette },
     { id: 'users' as Tab, label: t('admin.users'), icon: Users },
     { id: 'messages' as Tab, label: t('admin.messages'), icon: MessageSquare },
     { id: 'testimonials' as Tab, label: t('admin.testimonials'), icon: Star },
@@ -31,7 +33,7 @@ const AdminPage = () => {
     { id: 'shipments' as Tab, label: t('admin.shipments'), icon: Package },
     { id: 'albums' as Tab, label: t('admin.albums'), icon: Camera },
     { id: 'partners' as Tab, label: t('admin.partners'), icon: Handshake },
-    { id: 'content' as Tab, label: t('admin.content'), icon: FileText },
+    { id: 'content' as Tab, label: 'Contenu brut', icon: FileText },
   ];
 
   return (
@@ -59,6 +61,8 @@ const AdminPage = () => {
           </div>
 
           {activeTab === 'dashboard' && <DashboardTab />}
+          {activeTab === 'hero' && <HeroBannerManager />}
+          {activeTab === 'cms' && <SiteContentManager />}
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'content' && <ContentTab />}
           {activeTab === 'messages' && <MessagesTab />}
