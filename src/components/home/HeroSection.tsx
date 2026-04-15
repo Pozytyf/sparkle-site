@@ -50,31 +50,67 @@ const HeroSection = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Animated particles */}
+      {/* Animated particles - enhanced */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-accent/10"
-            style={{
-              width: 4 + Math.random() * 8,
-              height: 4 + Math.random() * 8,
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-            }}
-            animate={{
-              y: [0, -30 - Math.random() * 40, 0],
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        {[...Array(20)].map((_, i) => {
+          const size = 3 + (i % 5) * 4;
+          const x = (i * 17 + 5) % 90;
+          const y = (i * 13 + 8) % 85;
+          const dur = 4 + (i % 4) * 2;
+          const del = (i % 6) * 0.5;
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: size,
+                height: size,
+                left: `${x}%`,
+                top: `${y}%`,
+                background: i % 3 === 0
+                  ? 'hsl(35 95% 55% / 0.25)'
+                  : i % 3 === 1
+                  ? 'hsl(210 40% 98% / 0.15)'
+                  : 'hsl(35 95% 55% / 0.12)',
+              }}
+              animate={{
+                y: [0, -40 - (i % 5) * 15, 0],
+                x: [0, (i % 2 === 0 ? 15 : -15), 0],
+                opacity: [0.1, 0.7, 0.1],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: dur,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: del,
+              }}
+            />
+          );
+        })}
       </div>
+
+      {/* Animated gradient overlay */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 60% 50% at 20% 50%, hsl(35 95% 55% / 0.08) 0%, transparent 70%)',
+        }}
+        animate={{
+          opacity: [0.4, 0.8, 0.4],
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 40% 60% at 80% 40%, hsl(217 91% 40% / 0.12) 0%, transparent 70%)',
+        }}
+        animate={{
+          opacity: [0.3, 0.7, 0.3],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+      />
 
       {/* Floating Icons */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -37,23 +37,23 @@ const Navbar = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md shadow-md py-1.5'
-          : 'bg-background/80 backdrop-blur-sm py-3'
+          ? 'bg-background/95 backdrop-blur-md shadow-md py-2'
+          : 'bg-background/80 backdrop-blur-sm py-4'
       }`}
     >
       <div className="container-custom">
         <nav className="flex items-center justify-between">
           <Link to="/" className="flex items-center shrink-0">
-            <motion.img src={logo} alt="HP Logistics" className="h-8 md:h-10" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} />
+            <motion.img src={logo} alt="HP Logistics" className="h-10 md:h-12" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }} />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-medium transition-colors duration-200 hover:text-accent whitespace-nowrap ${
+                className={`relative text-[15px] font-semibold transition-colors duration-200 hover:text-accent whitespace-nowrap ${
                   location.pathname === link.path ? 'text-accent' : 'text-foreground'
                 }`}
               >
@@ -66,7 +66,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Right */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-3">
             <LanguageSelector />
             <a href="tel:+2250778750064" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors ml-1">
               <Phone className="h-3.5 w-3.5" />
@@ -75,24 +75,24 @@ const Navbar = () => {
             <div className="w-px h-5 bg-border mx-1" />
             {user ? (
               <>
-                <Button asChild variant="ghost" size="sm" className="h-8 px-2.5 text-xs">
+                <Button asChild variant="ghost" size="sm" className="h-9 px-3 text-sm">
                   <Link to="/espace-client"><User className="h-3.5 w-3.5" /></Link>
                 </Button>
                 {isAdmin && (
-                  <Button asChild variant="ghost" size="sm" className="h-8 px-2.5 text-xs">
+                  <Button asChild variant="ghost" size="sm" className="h-9 px-3 text-sm">
                     <Link to="/admin"><Shield className="h-3.5 w-3.5" /></Link>
                   </Button>
                 )}
-                <Button variant="ghost" size="sm" onClick={signOut} className="h-8 px-2.5 text-xs">
+                <Button variant="ghost" size="sm" onClick={signOut} className="h-9 px-3 text-sm">
                   <LogOut className="h-3.5 w-3.5" />
                 </Button>
               </>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm" className="h-8 px-3 text-xs">
+                <Button asChild variant="ghost" size="sm" className="h-9 px-4 text-sm">
                   <Link to="/login">{t('auth.login')}</Link>
                 </Button>
-                <Button asChild variant="accent" size="sm" className="h-8 px-3 text-xs">
+                <Button asChild variant="accent" size="sm" className="h-9 px-4 text-sm">
                   <Link to="/register">{t('auth.register')}</Link>
                 </Button>
               </>
