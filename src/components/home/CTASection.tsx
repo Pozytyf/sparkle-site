@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
 const CTASection = () => {
   const { t } = useLanguage();
+  const { c } = useSiteContent();
 
   return (
     <section className="relative py-24 overflow-hidden">
@@ -57,7 +59,7 @@ const CTASection = () => {
             viewport={{ once: true }}
             className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6"
           >
-            {t('cta.title')}
+            {c('cta_title', t('cta.title'))}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -66,7 +68,7 @@ const CTASection = () => {
             transition={{ delay: 0.1 }}
             className="text-primary-foreground/90 text-lg mb-10"
           >
-            {t('cta.description')}
+            {c('cta_description', t('cta.description'))}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

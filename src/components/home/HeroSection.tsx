@@ -5,6 +5,7 @@ import { ArrowRight, Ship, Plane, Truck, ChevronLeft, ChevronRight } from 'lucid
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCountUp } from '@/hooks/useCountUp';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import { supabase } from '@/integrations/supabase/client';
 import heroImage from '@/assets/hero-logistics.jpg';
 import serviceRoad from '@/assets/service-road.jpg';
@@ -15,6 +16,7 @@ const defaultSlides = [heroImage, serviceRoad, serviceMaritime, serviceAir];
 
 const HeroSection = () => {
   const { t } = useLanguage();
+  const { c } = useSiteContent();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [heroSlides, setHeroSlides] = useState<string[]>(defaultSlides);
   const stat1 = useCountUp(10, 2000);
@@ -173,7 +175,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-5 py-2.5 bg-accent text-accent-foreground text-base font-bold rounded-full mb-8 shadow-lg shadow-accent/30">
-              {t('hero.badge')}
+              {c('hero_badge', t('hero.badge'))}
             </span>
           </motion.div>
 
@@ -183,8 +185,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground leading-tight mb-8 drop-shadow-lg"
           >
-            {t('hero.title1')}{' '}
-            <span className="text-gradient">{t('hero.title2')}</span> {t('hero.title3')}
+            {c('hero_title', `${t('hero.title1')} ${t('hero.title2')} ${t('hero.title3')}`)}
           </motion.h1>
 
           <motion.p
@@ -193,7 +194,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-primary-foreground/90 mb-10 leading-relaxed drop-shadow-sm"
           >
-            {t('hero.description')}
+            {c('hero_subtitle', t('hero.description'))}
           </motion.p>
 
           <motion.div
