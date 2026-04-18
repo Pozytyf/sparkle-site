@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Upload, Type, Image as ImageIcon, FileText, Palette, RotateCcw, MapPin, Search } from 'lucide-react';
+import { Save, Upload, Type, Image as ImageIcon, FileText, Palette, RotateCcw, MapPin, Search, History as HistoryIcon, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,8 +8,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Skeleton } from '@/components/ui/skeleton';
+import RichTextEditor from '@/components/cms/RichTextEditor';
+import SiteContentHistory from './SiteContentHistory';
 
-type FieldType = 'text' | 'textarea' | 'image' | 'url' | 'maps';
+type FieldType = 'text' | 'textarea' | 'image' | 'url' | 'maps' | 'rich';
 
 interface Field {
   label: string;
@@ -43,17 +45,60 @@ const sections: SectionConfig[] = [
     description: 'Contenu de la page À propos',
     fields: [
       { key: 'about_title', label: 'Titre', type: 'text', defaultValue: 'À propos de HP LOGISTICS' },
-      { key: 'about_content', label: 'Contenu', type: 'textarea', hint: 'Sauts de ligne autorisés' },
+      { key: 'about_content', label: 'Contenu (riche)', type: 'rich', hint: 'Mise en forme : gras, italique, listes, liens' },
       { key: 'about_image', label: 'Image principale', type: 'image' },
     ],
   },
   {
     key: 'services',
-    label: '🚚 Section Services',
-    description: 'Titre et description de la section services',
+    label: '🚚 Services (4 modes)',
+    description: 'Titre, description et image de chaque mode de transport',
     fields: [
-      { key: 'services_title', label: 'Titre', type: 'text', defaultValue: 'Nos Services' },
-      { key: 'services_description', label: 'Description', type: 'textarea' },
+      { key: 'services_title', label: 'Titre section', type: 'text', defaultValue: 'Nos Services' },
+      { key: 'services_description', label: 'Description section', type: 'textarea' },
+      { key: 'service_road_title', label: '🚛 Routier - Titre', type: 'text', defaultValue: 'Transport Routier' },
+      { key: 'service_road_desc', label: '🚛 Routier - Description', type: 'textarea' },
+      { key: 'service_road_image', label: '🚛 Routier - Image', type: 'image' },
+      { key: 'service_air_title', label: '✈️ Aérien - Titre', type: 'text', defaultValue: 'Transport Aérien' },
+      { key: 'service_air_desc', label: '✈️ Aérien - Description', type: 'textarea' },
+      { key: 'service_air_image', label: '✈️ Aérien - Image', type: 'image' },
+      { key: 'service_maritime_title', label: '🚢 Maritime - Titre', type: 'text', defaultValue: 'Transport Maritime' },
+      { key: 'service_maritime_desc', label: '🚢 Maritime - Description', type: 'textarea' },
+      { key: 'service_maritime_image', label: '🚢 Maritime - Image', type: 'image' },
+      { key: 'service_rail_title', label: '🚆 Ferroviaire - Titre', type: 'text', defaultValue: 'Transport Ferroviaire' },
+      { key: 'service_rail_desc', label: '🚆 Ferroviaire - Description', type: 'textarea' },
+      { key: 'service_rail_image', label: '🚆 Ferroviaire - Image', type: 'image' },
+    ],
+  },
+  {
+    key: 'advantages',
+    label: '⭐ Page Atouts',
+    description: 'Hero, statistiques et CTA de la page atouts',
+    fields: [
+      { key: 'advantages_title', label: 'Titre Hero', type: 'text' },
+      { key: 'advantages_description', label: 'Description Hero', type: 'textarea' },
+      { key: 'advantages_trust_cta', label: 'Titre CTA bas', type: 'text' },
+      { key: 'advantages_trust_desc', label: 'Description CTA bas', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'realisations',
+    label: '📸 Page Réalisations',
+    description: 'Titre et description de la page portfolio',
+    fields: [
+      { key: 'realisations_badge', label: 'Badge', type: 'text', defaultValue: 'Nos Réalisations' },
+      { key: 'realisations_title', label: 'Titre', type: 'text', defaultValue: 'Découvrez nos réalisations' },
+      { key: 'realisations_description', label: 'Description', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'quote',
+    label: '📝 Page Devis',
+    description: 'Titre et description du formulaire de devis',
+    fields: [
+      { key: 'quote_badge', label: 'Badge', type: 'text', defaultValue: 'Devis gratuit' },
+      { key: 'quote_title', label: 'Titre', type: 'text' },
+      { key: 'quote_description', label: 'Description', type: 'textarea' },
     ],
   },
   {
@@ -100,6 +145,7 @@ const SiteContentManager = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [uploading, setUploading] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [view, setView] = useState<'editor' | 'history'>('editor');
 
   const fetchContent = async () => {
     const { data } = await supabase.from('site_content').select('*');
