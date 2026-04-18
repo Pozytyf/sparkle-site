@@ -357,7 +357,9 @@ const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImage
       </div>
       {field.hint && <p className="text-xs text-muted-foreground mb-2 italic">{field.hint}</p>}
 
-      {field.type === 'textarea' ? (
+      {field.type === 'rich' ? (
+        <RichTextEditor value={localValue} onChange={handleChange} />
+      ) : field.type === 'textarea' ? (
         <Textarea value={localValue} onChange={(e) => handleChange(e.target.value)} rows={4} className="text-sm" />
       ) : field.type === 'image' ? (
         <div className="space-y-2">
