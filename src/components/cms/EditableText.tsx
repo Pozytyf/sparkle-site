@@ -6,26 +6,25 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import RichTextEditor from './RichTextEditor';
+import RichText from './RichText';
 
 interface EditableTextProps {
   contentKey: string;
   fallback?: string;
   multiline?: boolean;
+  rich?: boolean;
   label?: string;
   as?: 'span' | 'div' | 'p' | 'h1' | 'h2' | 'h3' | 'h4';
   className?: string;
-  children?: ReactNode; // optional override of rendered content
+  children?: ReactNode;
 }
 
-/**
- * Renders editable site content. When the user is admin, a small pencil
- * appears on hover; clicking it opens an inline editor. Updates are saved
- * to site_content and broadcast in realtime to all open tabs.
- */
 export const EditableText = ({
   contentKey,
   fallback = '',
   multiline = false,
+  rich = false,
   label,
   as: Tag = 'span',
   className = '',
@@ -56,8 +55,10 @@ export const EditableText = ({
 
   if (editing && isAdmin) {
     return (
-      <span className="inline-block w-full align-top relative z-50">
-        {multiline ? (
+      <span className="block w-full align-top relative z-50">
+        {rich ? (
+          <RichTextEditor value={draft} onChange={setDraft} />
+        ) : multiline ? (
           <Textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={4} className="text-sm" autoFocus />
         ) : (
           <Input value={draft} onChange={(e) => setDraft(e.target.value)} className="text-sm" autoFocus />
@@ -74,13 +75,15 @@ export const EditableText = ({
     );
   }
 
+  const renderedContent = children ?? (rich ? <RichText html={value} /> : value);
+
   if (!isAdmin) {
-    return <Tag className={className}>{children ?? value}</Tag>;
+    return <Tag className={className}>{renderedContent}</Tag>;
   }
 
   return (
     <Tag className={`${className} group/edit relative inline-block`}>
-      {children ?? value}
+      {renderedContent}
       <button
         type="button"
         onClick={startEdit}
