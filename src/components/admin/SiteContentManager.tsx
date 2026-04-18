@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Upload, Type, Image as ImageIcon, FileText, Palette, RotateCcw, MapPin, Search } from 'lucide-react';
+import { Save, Upload, Type, Image as ImageIcon, FileText, Palette, RotateCcw, MapPin, Search, History as HistoryIcon, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,8 +8,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Skeleton } from '@/components/ui/skeleton';
+import RichTextEditor from '@/components/cms/RichTextEditor';
+import SiteContentHistory from './SiteContentHistory';
 
-type FieldType = 'text' | 'textarea' | 'image' | 'url' | 'maps';
+type FieldType = 'text' | 'textarea' | 'image' | 'url' | 'maps' | 'rich';
 
 interface Field {
   label: string;
@@ -43,17 +45,60 @@ const sections: SectionConfig[] = [
     description: 'Contenu de la page À propos',
     fields: [
       { key: 'about_title', label: 'Titre', type: 'text', defaultValue: 'À propos de HP LOGISTICS' },
-      { key: 'about_content', label: 'Contenu', type: 'textarea', hint: 'Sauts de ligne autorisés' },
+      { key: 'about_content', label: 'Contenu (riche)', type: 'rich', hint: 'Mise en forme : gras, italique, listes, liens' },
       { key: 'about_image', label: 'Image principale', type: 'image' },
     ],
   },
   {
     key: 'services',
-    label: '🚚 Section Services',
-    description: 'Titre et description de la section services',
+    label: '🚚 Services (4 modes)',
+    description: 'Titre, description et image de chaque mode de transport',
     fields: [
-      { key: 'services_title', label: 'Titre', type: 'text', defaultValue: 'Nos Services' },
-      { key: 'services_description', label: 'Description', type: 'textarea' },
+      { key: 'services_title', label: 'Titre section', type: 'text', defaultValue: 'Nos Services' },
+      { key: 'services_description', label: 'Description section', type: 'textarea' },
+      { key: 'service_road_title', label: '🚛 Routier - Titre', type: 'text', defaultValue: 'Transport Routier' },
+      { key: 'service_road_desc', label: '🚛 Routier - Description', type: 'textarea' },
+      { key: 'service_road_image', label: '🚛 Routier - Image', type: 'image' },
+      { key: 'service_air_title', label: '✈️ Aérien - Titre', type: 'text', defaultValue: 'Transport Aérien' },
+      { key: 'service_air_desc', label: '✈️ Aérien - Description', type: 'textarea' },
+      { key: 'service_air_image', label: '✈️ Aérien - Image', type: 'image' },
+      { key: 'service_maritime_title', label: '🚢 Maritime - Titre', type: 'text', defaultValue: 'Transport Maritime' },
+      { key: 'service_maritime_desc', label: '🚢 Maritime - Description', type: 'textarea' },
+      { key: 'service_maritime_image', label: '🚢 Maritime - Image', type: 'image' },
+      { key: 'service_rail_title', label: '🚆 Ferroviaire - Titre', type: 'text', defaultValue: 'Transport Ferroviaire' },
+      { key: 'service_rail_desc', label: '🚆 Ferroviaire - Description', type: 'textarea' },
+      { key: 'service_rail_image', label: '🚆 Ferroviaire - Image', type: 'image' },
+    ],
+  },
+  {
+    key: 'advantages',
+    label: '⭐ Page Atouts',
+    description: 'Hero, statistiques et CTA de la page atouts',
+    fields: [
+      { key: 'advantages_title', label: 'Titre Hero', type: 'text' },
+      { key: 'advantages_description', label: 'Description Hero', type: 'textarea' },
+      { key: 'advantages_trust_cta', label: 'Titre CTA bas', type: 'text' },
+      { key: 'advantages_trust_desc', label: 'Description CTA bas', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'realisations',
+    label: '📸 Page Réalisations',
+    description: 'Titre et description de la page portfolio',
+    fields: [
+      { key: 'realisations_badge', label: 'Badge', type: 'text', defaultValue: 'Nos Réalisations' },
+      { key: 'realisations_title', label: 'Titre', type: 'text', defaultValue: 'Découvrez nos réalisations' },
+      { key: 'realisations_description', label: 'Description', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'quote',
+    label: '📝 Page Devis',
+    description: 'Titre et description du formulaire de devis',
+    fields: [
+      { key: 'quote_badge', label: 'Badge', type: 'text', defaultValue: 'Devis gratuit' },
+      { key: 'quote_title', label: 'Titre', type: 'text' },
+      { key: 'quote_description', label: 'Description', type: 'textarea' },
     ],
   },
   {
@@ -100,6 +145,7 @@ const SiteContentManager = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [uploading, setUploading] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [view, setView] = useState<'editor' | 'history'>('editor');
 
   const fetchContent = async () => {
     const { data } = await supabase.from('site_content').select('*');
@@ -166,76 +212,99 @@ const SiteContentManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header with search */}
+      {/* Header with search + view toggle */}
       <div className="bg-gradient-to-br from-accent/5 to-primary/5 rounded-xl p-5 border border-accent/20">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <h2 className="font-heading text-xl font-bold text-foreground flex items-center gap-2">
               <Palette className="h-5 w-5 text-accent" />
               Framework CMS
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               Modifiez tous les textes et images du site. Les changements s'appliquent en temps réel.
             </p>
           </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher un champ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-64 text-sm"
-            />
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex rounded-lg border border-border overflow-hidden">
+              <button
+                onClick={() => setView('editor')}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${view === 'editor' ? 'bg-accent text-accent-foreground' : 'bg-card text-muted-foreground hover:bg-muted'}`}
+              >
+                <Palette className="inline h-3 w-3 mr-1" /> Éditeur
+              </button>
+              <button
+                onClick={() => setView('history')}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${view === 'history' ? 'bg-accent text-accent-foreground' : 'bg-card text-muted-foreground hover:bg-muted'}`}
+              >
+                <HistoryIcon className="inline h-3 w-3 mr-1" /> Historique
+              </button>
+            </div>
+            {view === 'editor' && (
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Rechercher un champ..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 w-64 text-sm"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Section tabs */}
-      <div className="flex flex-wrap gap-2">
-        {filteredSections.map(section => (
-          <Button
-            key={section.key}
-            variant={currentSection?.key === section.key ? 'accent' : 'outline'}
-            size="sm"
-            onClick={() => setActiveSection(section.key)}
-            className="text-xs"
-          >
-            {section.label}
-            <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-background/30 text-[10px]">
-              {section.fields.length}
-            </span>
-          </Button>
-        ))}
-      </div>
-
-      {/* Active section editor */}
-      {currentSection && (
-        <motion.div
-          key={currentSection.key}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl p-6 border border-border"
-        >
-          <div className="mb-6">
-            <h3 className="font-heading text-lg font-bold text-foreground">{currentSection.label}</h3>
-            <p className="text-sm text-muted-foreground">{currentSection.description}</p>
-          </div>
-
-          <div className="space-y-5">
-            {currentSection.fields.map(field => (
-              <FieldEditor
-                key={field.key}
-                field={field}
-                value={getValue(field.key)}
-                onSave={(value) => handleSave(field, value)}
-                onReset={() => handleReset(field)}
-                saving={saving === field.key}
-                uploading={uploading === field.key}
-                onImageUpload={(e) => handleImageUpload(field.key, field.label, e)}
-              />
+      {view === 'history' ? (
+        <SiteContentHistory />
+      ) : (
+        <>
+          <div className="flex flex-wrap gap-2">
+            {filteredSections.map(section => (
+              <Button
+                key={section.key}
+                variant={currentSection?.key === section.key ? 'accent' : 'outline'}
+                size="sm"
+                onClick={() => setActiveSection(section.key)}
+                className="text-xs"
+              >
+                {section.label}
+                <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-background/30 text-[10px]">
+                  {section.fields.length}
+                </span>
+              </Button>
             ))}
           </div>
-        </motion.div>
+
+          {currentSection && (
+            <motion.div
+              key={currentSection.key}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-card rounded-xl p-6 border border-border"
+            >
+              <div className="mb-6">
+                <h3 className="font-heading text-lg font-bold text-foreground">{currentSection.label}</h3>
+                <p className="text-sm text-muted-foreground">{currentSection.description}</p>
+              </div>
+
+              <div className="space-y-5">
+                {currentSection.fields.map(field => (
+                  <FieldEditor
+                    key={field.key}
+                    field={field}
+                    value={getValue(field.key)}
+                    onSave={(value) => handleSave(field, value)}
+                    onReset={() => handleReset(field)}
+                    saving={saving === field.key}
+                    uploading={uploading === field.key}
+                    onImageUpload={(e) => handleImageUpload(field.key, field.label, e)}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </>
       )}
     </div>
   );
@@ -288,7 +357,9 @@ const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImage
       </div>
       {field.hint && <p className="text-xs text-muted-foreground mb-2 italic">{field.hint}</p>}
 
-      {field.type === 'textarea' ? (
+      {field.type === 'rich' ? (
+        <RichTextEditor value={localValue} onChange={handleChange} />
+      ) : field.type === 'textarea' ? (
         <Textarea value={localValue} onChange={(e) => handleChange(e.target.value)} rows={4} className="text-sm" />
       ) : field.type === 'image' ? (
         <div className="space-y-2">

@@ -9,6 +9,7 @@ import ParallaxHero from '@/components/ParallaxHero';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { EditableText } from '@/components/cms/EditableText';
 
 interface Album {
   id: string;
@@ -63,15 +64,19 @@ const RealisationsPage = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/90 text-accent-foreground text-sm font-semibold rounded-full mb-6">
               <Camera className="h-4 w-4" />
-              {language === 'fr' ? 'Nos Réalisations' : 'Our Projects'}
+              <EditableText contentKey="realisations_badge" fallback={language === 'fr' ? 'Nos Réalisations' : 'Our Projects'} label="Badge Réalisations" />
             </span>
             <h1 className="font-heading text-3xl md:text-5xl font-bold text-primary-foreground mb-4">
-              {language === 'fr' ? 'Découvrez nos réalisations' : 'Discover our projects'}
+              <EditableText contentKey="realisations_title" fallback={language === 'fr' ? 'Découvrez nos réalisations' : 'Discover our projects'} label="Titre Réalisations" />
             </h1>
             <p className="text-primary-foreground/80 text-lg max-w-2xl">
-              {language === 'fr'
-                ? 'Explorez nos chantiers, livraisons et installations à travers nos albums photos. Chaque projet témoigne de notre expertise et de notre engagement qualité.'
-                : 'Explore our construction sites, deliveries and installations through our photo albums. Each project reflects our expertise and commitment to quality.'}
+              <EditableText
+                contentKey="realisations_description"
+                fallback={language === 'fr'
+                  ? 'Explorez nos chantiers, livraisons et installations à travers nos albums photos. Chaque projet témoigne de notre expertise et de notre engagement qualité.'
+                  : 'Explore our construction sites, deliveries and installations through our photo albums. Each project reflects our expertise and commitment to quality.'}
+                label="Description Réalisations" multiline as="span"
+              />
             </p>
           </motion.div>
         </div>

@@ -363,6 +363,42 @@ export type Database = {
         }
         Relationships: []
       }
+      site_content_history: {
+        Row: {
+          action: string
+          changed_at: string
+          changed_by: string | null
+          content: string | null
+          id: string
+          image_url: string | null
+          metadata: Json | null
+          section_key: string
+          title: string | null
+        }
+        Insert: {
+          action?: string
+          changed_at?: string
+          changed_by?: string | null
+          content?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          section_key: string
+          title?: string | null
+        }
+        Update: {
+          action?: string
+          changed_at?: string
+          changed_by?: string | null
+          content?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          section_key?: string
+          title?: string | null
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           company: string | null
