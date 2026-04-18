@@ -5,6 +5,7 @@ import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCountUp } from '@/hooks/useCountUp';
+import { EditableText } from '@/components/cms/EditableText';
 
 const AdvantagesPage = () => {
   const { t } = useLanguage();
@@ -38,8 +39,12 @@ const AdvantagesPage = () => {
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
             <span className="inline-block px-4 py-2 bg-accent/90 text-accent-foreground text-sm font-semibold rounded-full mb-6">{t('advantages.badge')}</span>
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-6">{t('advantages.title')}</h1>
-            <p className="text-lg text-primary-foreground/90">{t('advantages.description')}</p>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground mb-6">
+              <EditableText contentKey="advantages_title" fallback={t('advantages.title')} label="Titre Atouts" />
+            </h1>
+            <p className="text-lg text-primary-foreground/90">
+              <EditableText contentKey="advantages_description" fallback={t('advantages.description')} label="Description Atouts" multiline as="span" />
+            </p>
           </motion.div>
         </div>
       </section>
@@ -101,8 +106,12 @@ const AdvantagesPage = () => {
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-primary" />
         <div className="container-custom relative z-10 text-center">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">{t('advantages.trustCta')}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">{t('advantages.trustDesc')}</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+            <EditableText contentKey="advantages_trust_cta" fallback={t('advantages.trustCta')} label="Titre CTA Atouts" />
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">
+            <EditableText contentKey="advantages_trust_desc" fallback={t('advantages.trustDesc')} label="Description CTA Atouts" multiline as="span" />
+          </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
             <Button asChild variant="hero" size="xl">
               <Link to="/contact">{t('advantages.freeQuote')} <ArrowRight className="ml-2 h-5 w-5" /></Link>

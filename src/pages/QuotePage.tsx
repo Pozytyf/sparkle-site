@@ -56,10 +56,15 @@ const QuotePage = () => {
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
             <span className="inline-block px-4 py-2 bg-accent/90 text-accent-foreground text-sm font-semibold rounded-full mb-4">
-              <FileText className="inline h-4 w-4 mr-1" /> {t('quote.badge')}
+              <FileText className="inline h-4 w-4 mr-1" />
+              <EditableText contentKey="quote_badge" fallback={t('quote.badge')} label="Badge Devis" />
             </span>
-            <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground">{t('quote.title')}</h1>
-            <p className="text-primary-foreground/80 mt-3 text-lg">{t('quote.description')}</p>
+            <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground">
+              <EditableText contentKey="quote_title" fallback={t('quote.title')} label="Titre Devis" />
+            </h1>
+            <p className="text-primary-foreground/80 mt-3 text-lg">
+              <EditableText contentKey="quote_description" fallback={t('quote.description')} label="Description Devis" multiline as="span" />
+            </p>
           </motion.div>
         </div>
       </section>
