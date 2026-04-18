@@ -12,7 +12,6 @@ import warehouseImage from '@/assets/warehouse.jpg';
 const AboutPage = () => {
   const { t } = useLanguage();
   const { c } = useSiteContent();
-  const aboutImage = c('about_image', warehouseImage);
 
   const values = [
     { icon: CheckCircle, title: t('why.reliability.title'), description: t('why.reliability.desc') },
