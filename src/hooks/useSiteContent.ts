@@ -7,22 +7,23 @@ let cache: ContentMap | null = null;
 let pending: Promise<ContentMap> | null = null;
 const listeners = new Set<(m: ContentMap) => void>();
 
-const fetchAll = async (): Promise<ContentMap> => {
-  if (cache) return cache;
+const notify = (m: ContentMap) => listeners.forEach(l => l(m));
+
+const fetchAll = async (force = false): Promise<ContentMap> => {
+  if (cache && !force) return cache;
   if (pending) return pending;
   pending = (async () => {
     const { data } = await supabase.from('site_content').select('section_key, content');
     const map: ContentMap = {};
-    (data || []).forEach((r: any) => { if (r.content) map[r.section_key] = r.content; });
+    (data || []).forEach((r: any) => { if (r.content !== null && r.content !== undefined) map[r.section_key] = r.content; });
     cache = map;
     pending = null;
-    listeners.forEach(l => l(map));
+    notify(map);
     return map;
   })();
   return pending;
 };
 
-// Realtime: refetch on any change
 let subscribed = false;
 const ensureSubscribed = () => {
   if (subscribed) return;
@@ -30,16 +31,33 @@ const ensureSubscribed = () => {
   supabase
     .channel('site-content-changes')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'site_content' }, () => {
-      cache = null;
-      fetchAll();
+      fetchAll(true);
     })
     .subscribe();
 };
 
 /**
- * Returns a getter `c(key, fallback)` that reads CMS content with fallback.
- * Auto-refreshes when admin edits content (via realtime).
+ * Save a content key (upsert). Returns the saved value. Optimistic update.
  */
+export const setSiteContent = async (key: string, value: string, label?: string) => {
+  // Optimistic
+  cache = { ...(cache || {}), [key]: value };
+  notify(cache);
+
+  const { data: existing } = await supabase
+    .from('site_content')
+    .select('id')
+    .eq('section_key', key)
+    .maybeSingle();
+
+  if (existing) {
+    await supabase.from('site_content').update({ content: value }).eq('id', existing.id);
+  } else {
+    await supabase.from('site_content').insert({ section_key: key, content: value, title: label || key });
+  }
+  return value;
+};
+
 export const useSiteContent = () => {
   const [map, setMap] = useState<ContentMap>(cache || {});
 
@@ -51,6 +69,9 @@ export const useSiteContent = () => {
     return () => { listeners.delete(listener); };
   }, []);
 
-  const c = (key: string, fallback: string = ''): string => map[key] || fallback;
-  return { c, content: map };
+  const c = (key: string, fallback: string = ''): string => {
+    const v = map[key];
+    return v && v.length > 0 ? v : fallback;
+  };
+  return { c, content: map, set: setSiteContent };
 };
