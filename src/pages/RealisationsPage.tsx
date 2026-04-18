@@ -9,6 +9,7 @@ import ParallaxHero from '@/components/ParallaxHero';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { EditableText } from '@/components/cms/EditableText';
 
 interface Album {
   id: string;

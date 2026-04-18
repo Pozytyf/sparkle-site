@@ -9,6 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { EditableText } from '@/components/cms/EditableText';
 
 const transportModes = [
   { value: 'maritime', icon: Ship, label: 'Maritime' },
