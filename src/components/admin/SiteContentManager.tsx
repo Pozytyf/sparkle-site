@@ -212,76 +212,99 @@ const SiteContentManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header with search */}
+      {/* Header with search + view toggle */}
       <div className="bg-gradient-to-br from-accent/5 to-primary/5 rounded-xl p-5 border border-accent/20">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <h2 className="font-heading text-xl font-bold text-foreground flex items-center gap-2">
               <Palette className="h-5 w-5 text-accent" />
               Framework CMS
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               Modifiez tous les textes et images du site. Les changements s'appliquent en temps réel.
             </p>
           </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher un champ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-64 text-sm"
-            />
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex rounded-lg border border-border overflow-hidden">
+              <button
+                onClick={() => setView('editor')}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${view === 'editor' ? 'bg-accent text-accent-foreground' : 'bg-card text-muted-foreground hover:bg-muted'}`}
+              >
+                <Palette className="inline h-3 w-3 mr-1" /> Éditeur
+              </button>
+              <button
+                onClick={() => setView('history')}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${view === 'history' ? 'bg-accent text-accent-foreground' : 'bg-card text-muted-foreground hover:bg-muted'}`}
+              >
+                <HistoryIcon className="inline h-3 w-3 mr-1" /> Historique
+              </button>
+            </div>
+            {view === 'editor' && (
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Rechercher un champ..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 w-64 text-sm"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Section tabs */}
-      <div className="flex flex-wrap gap-2">
-        {filteredSections.map(section => (
-          <Button
-            key={section.key}
-            variant={currentSection?.key === section.key ? 'accent' : 'outline'}
-            size="sm"
-            onClick={() => setActiveSection(section.key)}
-            className="text-xs"
-          >
-            {section.label}
-            <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-background/30 text-[10px]">
-              {section.fields.length}
-            </span>
-          </Button>
-        ))}
-      </div>
-
-      {/* Active section editor */}
-      {currentSection && (
-        <motion.div
-          key={currentSection.key}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl p-6 border border-border"
-        >
-          <div className="mb-6">
-            <h3 className="font-heading text-lg font-bold text-foreground">{currentSection.label}</h3>
-            <p className="text-sm text-muted-foreground">{currentSection.description}</p>
-          </div>
-
-          <div className="space-y-5">
-            {currentSection.fields.map(field => (
-              <FieldEditor
-                key={field.key}
-                field={field}
-                value={getValue(field.key)}
-                onSave={(value) => handleSave(field, value)}
-                onReset={() => handleReset(field)}
-                saving={saving === field.key}
-                uploading={uploading === field.key}
-                onImageUpload={(e) => handleImageUpload(field.key, field.label, e)}
-              />
+      {view === 'history' ? (
+        <SiteContentHistory />
+      ) : (
+        <>
+          <div className="flex flex-wrap gap-2">
+            {filteredSections.map(section => (
+              <Button
+                key={section.key}
+                variant={currentSection?.key === section.key ? 'accent' : 'outline'}
+                size="sm"
+                onClick={() => setActiveSection(section.key)}
+                className="text-xs"
+              >
+                {section.label}
+                <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-background/30 text-[10px]">
+                  {section.fields.length}
+                </span>
+              </Button>
             ))}
           </div>
-        </motion.div>
+
+          {currentSection && (
+            <motion.div
+              key={currentSection.key}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-card rounded-xl p-6 border border-border"
+            >
+              <div className="mb-6">
+                <h3 className="font-heading text-lg font-bold text-foreground">{currentSection.label}</h3>
+                <p className="text-sm text-muted-foreground">{currentSection.description}</p>
+              </div>
+
+              <div className="space-y-5">
+                {currentSection.fields.map(field => (
+                  <FieldEditor
+                    key={field.key}
+                    field={field}
+                    value={getValue(field.key)}
+                    onSave={(value) => handleSave(field, value)}
+                    onReset={() => handleReset(field)}
+                    saving={saving === field.key}
+                    uploading={uploading === field.key}
+                    onImageUpload={(e) => handleImageUpload(field.key, field.label, e)}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </>
       )}
     </div>
   );
