@@ -63,9 +63,9 @@ const AboutPage = () => {
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-3 mb-6">
                 HP LOGISTICS – <span className="text-accent">{t('about.fullName')}</span>
               </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed whitespace-pre-line">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 {c('about_content', '') ? (
-                  <EditableText contentKey="about_content" fallback="" label="Contenu À Propos" multiline as="p" />
+                  <EditableText contentKey="about_content" fallback="" label="Contenu À Propos (riche)" rich as="div" className="block" />
                 ) : (
                   <>
                     <p>{t('about.content1')}</p>
