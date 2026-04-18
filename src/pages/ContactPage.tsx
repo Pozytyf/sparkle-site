@@ -24,7 +24,12 @@ const ContactPage = () => {
     { icon: Mail, title: t('contact.email'), content: c('contact_email', 'info@hp-logistics.net') },
     { icon: Clock, title: t('contact.hours'), content: t('contact.hoursValue') },
   ];
-  const mapsUrl = c('contact_maps', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-3.995!3d5.305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1eb5a4567e493%3A0x7f8e5b3c5d6e7f8a!2sMarcory%2C%20Abidjan%2C%20C%C3%B4te%20d&#39;Ivoire!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr');
+
+  // Maps URL: prefer custom embed URL, otherwise build from lat/lng
+  const customMapsUrl = c('contact_maps', '');
+  const lat = c('contact_lat', '5.298117');
+  const lng = c('contact_lng', '-4.009506');
+  const mapsUrl = customMapsUrl || `https://www.google.com/maps?q=${lat},${lng}&hl=fr&z=16&output=embed`;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
