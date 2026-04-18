@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { EditableText } from '@/components/cms/EditableText';
 import { supabase } from '@/integrations/supabase/client';
 import heroImage from '@/assets/hero-logistics.jpg';
 import serviceRoad from '@/assets/service-road.jpg';
@@ -175,7 +176,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-5 py-2.5 bg-accent text-accent-foreground text-base font-bold rounded-full mb-8 shadow-lg shadow-accent/30">
-              {c('hero_badge', t('hero.badge'))}
+              <EditableText contentKey="hero_badge" fallback={t('hero.badge')} label="Badge Hero" />
             </span>
           </motion.div>
 
@@ -185,7 +186,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground leading-tight mb-8 drop-shadow-lg"
           >
-            {c('hero_title', `${t('hero.title1')} ${t('hero.title2')} ${t('hero.title3')}`)}
+            <EditableText contentKey="hero_title" fallback={`${t('hero.title1')} ${t('hero.title2')} ${t('hero.title3')}`} label="Titre Hero" />
           </motion.h1>
 
           <motion.p
@@ -194,7 +195,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-primary-foreground/90 mb-10 leading-relaxed drop-shadow-sm"
           >
-            {c('hero_subtitle', t('hero.description'))}
+            <EditableText contentKey="hero_subtitle" fallback={t('hero.description')} label="Sous-titre Hero" multiline />
           </motion.p>
 
           <motion.div

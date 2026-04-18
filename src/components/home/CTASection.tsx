@@ -4,6 +4,7 @@ import { ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { EditableText } from '@/components/cms/EditableText';
 
 const CTASection = () => {
   const { t } = useLanguage();
@@ -59,7 +60,7 @@ const CTASection = () => {
             viewport={{ once: true }}
             className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6"
           >
-            {c('cta_title', t('cta.title'))}
+            <EditableText contentKey="cta_title" fallback={t('cta.title')} label="Titre CTA" />
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -68,7 +69,7 @@ const CTASection = () => {
             transition={{ delay: 0.1 }}
             className="text-primary-foreground/90 text-lg mb-10"
           >
-            {c('cta_description', t('cta.description'))}
+            <EditableText contentKey="cta_description" fallback={t('cta.description')} label="Description CTA" multiline />
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
