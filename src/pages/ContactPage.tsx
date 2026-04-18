@@ -8,20 +8,23 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
 const ContactPage = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { c } = useSiteContent();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
 
   const contactInfo = [
-    { icon: MapPin, title: t('contact.address'), content: "Abidjan Marcory, Allée Oumé et\nTreichville en face de Sogelux\nCôte d'Ivoire" },
-    { icon: Phone, title: t('contact.phones'), content: '+225 27 21 39 43 97\n+225 07 87 50 60 64' },
-    { icon: Mail, title: t('contact.email'), content: 'info@hp-logistics.net' },
+    { icon: MapPin, title: t('contact.address'), content: c('contact_address', "Abidjan Marcory, Allée Oumé et\nTreichville en face de Sogelux\nCôte d'Ivoire") },
+    { icon: Phone, title: t('contact.phones'), content: c('contact_phone', '+225 27 21 39 43 97\n+225 07 87 50 60 64') },
+    { icon: Mail, title: t('contact.email'), content: c('contact_email', 'info@hp-logistics.net') },
     { icon: Clock, title: t('contact.hours'), content: t('contact.hoursValue') },
   ];
+  const mapsUrl = c('contact_maps', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-3.995!3d5.305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1eb5a4567e493%3A0x7f8e5b3c5d6e7f8a!2sMarcory%2C%20Abidjan%2C%20C%C3%B4te%20d&#39;Ivoire!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -158,7 +161,7 @@ const ContactPage = () => {
             className="rounded-2xl overflow-hidden shadow-xl border border-border"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.5!2d-3.995!3d5.305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1eb5a4567e493%3A0x7f8e5b3c5d6e7f8a!2sMarcory%2C%20Abidjan%2C%20C%C3%B4te%20d&#39;Ivoire!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr"
+              src={mapsUrl}
               width="100%"
               height="450"
               style={{ border: 0 }}

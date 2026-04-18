@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, Linkedin, Twitter } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import logo from '@/assets/logo.png';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const { c } = useSiteContent();
 
   const quickLinks = [
     { name: t('nav.home'), path: '/' },
@@ -31,13 +33,13 @@ const Footer = () => {
           <div className="space-y-4">
             <img src={logo} alt="HP Logistics" className="h-10 brightness-0 invert" />
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              {t('footer.description')}
+              {c('footer_description', t('footer.description'))}
             </p>
             <div className="flex gap-4 pt-2">
               {[
-                { icon: Facebook, href: 'https://www.facebook.com/hplogistics', label: 'Facebook' },
-                { icon: Linkedin, href: '#', label: 'LinkedIn' },
-                { icon: Twitter, href: '#', label: 'Twitter' },
+                { icon: Facebook, href: c('footer_facebook', 'https://www.facebook.com/hplogistics'), label: 'Facebook' },
+                { icon: Linkedin, href: c('footer_linkedin', '#'), label: 'LinkedIn' },
+                { icon: Twitter, href: c('footer_instagram', '#'), label: 'Twitter' },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
