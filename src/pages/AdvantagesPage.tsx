@@ -14,19 +14,19 @@ const AdvantagesPage = () => {
   const satisfaction = useCountUp(98, 2000);
 
   const engagements = [
-    { icon: Clock, title: t('why.reactivity.title'), description: t('why.reactivity.desc') },
-    { icon: Shield, title: t('why.reliability.title'), description: t('why.reliability.desc') },
-    { icon: CheckCircle, title: t('why.transparency.title'), description: t('why.transparency.desc') },
-    { icon: Users, title: t('why.proximity.title'), description: t('why.proximity.desc') },
-    { icon: Headphones, title: t('why.support.title'), description: t('why.support.desc') },
-    { icon: Globe, title: t('why.network.title'), description: t('why.network.desc') },
+    { key: 'reactivity', icon: Clock, defaultTitle: t('why.reactivity.title'), defaultDesc: t('why.reactivity.desc') },
+    { key: 'reliability', icon: Shield, defaultTitle: t('why.reliability.title'), defaultDesc: t('why.reliability.desc') },
+    { key: 'transparency', icon: CheckCircle, defaultTitle: t('why.transparency.title'), defaultDesc: t('why.transparency.desc') },
+    { key: 'proximity', icon: Users, defaultTitle: t('why.proximity.title'), defaultDesc: t('why.proximity.desc') },
+    { key: 'support', icon: Headphones, defaultTitle: t('why.support.title'), defaultDesc: t('why.support.desc') },
+    { key: 'network', icon: Globe, defaultTitle: t('why.network.title'), defaultDesc: t('why.network.desc') },
   ];
 
   const infrastructure = [
-    { icon: Truck, title: t('advantages.vehicles'), description: t('advantages.vehiclesDesc') },
-    { icon: Building, title: t('advantages.facilities'), description: t('advantages.facilitiesDesc') },
-    { icon: Warehouse, title: t('advantages.warehouses'), description: t('advantages.warehousesDesc') },
-    { icon: Monitor, title: t('advantages.tools'), description: t('advantages.toolsDesc') },
+    { key: 'vehicles', icon: Truck, defaultTitle: t('advantages.vehicles'), defaultDesc: t('advantages.vehiclesDesc') },
+    { key: 'facilities', icon: Building, defaultTitle: t('advantages.facilities'), defaultDesc: t('advantages.facilitiesDesc') },
+    { key: 'warehouses', icon: Warehouse, defaultTitle: t('advantages.warehouses'), defaultDesc: t('advantages.warehousesDesc') },
+    { key: 'tools', icon: Monitor, defaultTitle: t('advantages.tools'), defaultDesc: t('advantages.toolsDesc') },
   ];
 
   return (
