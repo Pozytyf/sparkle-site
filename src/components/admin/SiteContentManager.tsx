@@ -157,21 +157,37 @@ const SiteContentManager = () => {
 
   useEffect(() => { fetchContent(); }, []);
 
-  const getValue = (key: string): string => contentMap[key]?.content || '';
+  // Show draft value if pending, else live content
+  const getValue = (key: string): string => {
+    const row = contentMap[key];
+    if (!row) return '';
+    return row.has_draft && row.draft_content !== null ? row.draft_content : (row.content || '');
+  };
+  const isDraft = (key: string): boolean => !!contentMap[key]?.has_draft;
 
   const handleSave = async (field: Field, value: string) => {
     setSaving(field.key);
     const existing = contentMap[field.key];
     if (existing) {
       await supabase.from('site_content').update({
-        content: value, title: field.label, updated_by: user?.id,
+        draft_content: value,
+        has_draft: true,
+        draft_updated_at: new Date().toISOString(),
+        draft_updated_by: user?.id,
+        title: field.label,
       }).eq('id', existing.id);
     } else {
       await supabase.from('site_content').insert({
-        section_key: field.key, content: value, title: field.label, updated_by: user?.id,
+        section_key: field.key,
+        content: '',
+        draft_content: value,
+        has_draft: true,
+        draft_updated_at: new Date().toISOString(),
+        draft_updated_by: user?.id,
+        title: field.label,
       });
     }
-    toast({ title: '✅ Sauvegardé', description: field.label });
+    toast({ title: '📝 Brouillon sauvegardé', description: `${field.label} — cliquez sur "Publier" en haut pour mettre en ligne.` });
     setSaving(null);
     fetchContent();
   };
