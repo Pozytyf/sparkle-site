@@ -310,6 +310,7 @@ const SiteContentManager = () => {
                     key={field.key}
                     field={field}
                     value={getValue(field.key)}
+                    isDraft={isDraft(field.key)}
                     onSave={(value) => handleSave(field, value)}
                     onReset={() => handleReset(field)}
                     saving={saving === field.key}
