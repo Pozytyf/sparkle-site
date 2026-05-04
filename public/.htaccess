@@ -1,0 +1,82 @@
+# ===================================================================
+# .htaccess pour HP Logistics - Hébergement LWS (Apache)
+# Place ce fichier à la racine du dossier où tu uploades le contenu
+# du dossier dist/ (généralement /www/ ou /public_html/ chez LWS)
+# ===================================================================
+
+# --- Activer le moteur de réécriture ---
+RewriteEngine On
+
+# --- Forcer HTTPS (recommandé après installation du certificat SSL) ---
+# Décommente ces 2 lignes une fois le SSL actif chez LWS
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- Forcer le www (ou retirer le www, choisis UNE option) ---
+# Option A : forcer https://www.hp-logistics.net
+# RewriteCond %{HTTP_HOST} ^hp-logistics\.net$ [NC]
+# RewriteRule ^(.*)$ https://www.hp-logistics.net/$1 [L,R=301]
+
+# --- SPA fallback : toutes les routes non-fichier vont à index.html ---
+# Indispensable pour React Router (sinon /services, /contact... font 404 au refresh)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+# ===================================================================
+# Optimisations performance
+# ===================================================================
+
+# --- Compression GZIP ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE application/x-javascript application/x-font-ttf
+  AddOutputFilterByType DEFLATE image/svg+xml font/opentype
+</IfModule>
+
+# --- Cache navigateur ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/font-woff "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
+
+# --- Cache control headers ---
+<IfModule mod_headers.c>
+  # Pas de cache pour index.html (toujours récupérer la dernière version)
+  <FilesMatch "index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # Cache long pour les assets versionnés (Vite ajoute des hash dans les noms)
+  <FilesMatch "\.(js|css|woff|woff2|ttf|otf|jpg|jpeg|png|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Sécurité : protéger contre clickjacking et MIME sniffing
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# --- Pages d'erreur custom (optionnel) ---
+ErrorDocument 404 /index.html
+
+# --- Bloquer l'accès aux fichiers sensibles ---
+<FilesMatch "(\.env|\.git|package\.json|tsconfig.*\.json|vite\.config.*)$">
+  Require all denied
+</FilesMatch>
