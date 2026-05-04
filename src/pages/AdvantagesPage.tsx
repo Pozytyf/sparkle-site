@@ -69,12 +69,16 @@ const AdvantagesPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {engagements.map((item, index) => (
-              <motion.div key={item.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5, scale: 1.02 }} className="group p-6 rounded-xl border border-border hover:border-accent/50 hover:shadow-lg bg-card transition-all duration-300">
+              <motion.div key={item.key} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5, scale: 1.02 }} className="group p-6 rounded-xl border border-border hover:border-accent/50 hover:shadow-lg bg-card transition-all duration-300">
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:rotate-6 transition-all duration-300">
                   <item.icon className="h-6 w-6 text-primary group-hover:text-accent transition-colors" />
                 </div>
-                <h3 className="font-heading text-xl font-bold text-card-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                <h3 className="font-heading text-xl font-bold text-card-foreground mb-2">
+                  <EditableText contentKey={`engagement_${item.key}_title`} fallback={item.defaultTitle} label={`Engagement ${item.key} - Titre`} />
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  <EditableText contentKey={`engagement_${item.key}_desc`} fallback={item.defaultDesc} label={`Engagement ${item.key} - Description`} multiline as="span" />
+                </p>
               </motion.div>
             ))}
           </div>
