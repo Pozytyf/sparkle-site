@@ -94,12 +94,16 @@ const AdvantagesPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {infrastructure.map((item, index) => (
-              <motion.div key={item.title} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.05 }} className="bg-card rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300">
+              <motion.div key={item.key} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.05 }} className="bg-card rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300">
                 <div className="h-16 w-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-5">
                   <item.icon className="h-8 w-8 text-accent" />
                 </div>
-                <h3 className="font-heading text-lg font-bold text-card-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">{item.description}</p>
+                <h3 className="font-heading text-lg font-bold text-card-foreground mb-2">
+                  <EditableText contentKey={`infra_${item.key}_title`} fallback={item.defaultTitle} label={`Infrastructure ${item.key} - Titre`} />
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  <EditableText contentKey={`infra_${item.key}_desc`} fallback={item.defaultDesc} label={`Infrastructure ${item.key} - Description`} multiline as="span" />
+                </p>
               </motion.div>
             ))}
           </div>
