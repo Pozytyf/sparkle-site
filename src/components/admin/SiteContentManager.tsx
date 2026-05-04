@@ -82,6 +82,40 @@ const sections: SectionConfig[] = [
     ],
   },
   {
+    key: 'engagements',
+    label: '💎 Atouts - 6 Engagements',
+    description: 'Cartes "Nos engagements" (réactivité, fiabilité, transparence, proximité, support, réseau)',
+    fields: [
+      { key: 'engagement_reactivity_title', label: '⏱️ Réactivité - Titre', type: 'text' },
+      { key: 'engagement_reactivity_desc', label: '⏱️ Réactivité - Description', type: 'textarea' },
+      { key: 'engagement_reliability_title', label: '🛡️ Fiabilité - Titre', type: 'text' },
+      { key: 'engagement_reliability_desc', label: '🛡️ Fiabilité - Description', type: 'textarea' },
+      { key: 'engagement_transparency_title', label: '✅ Transparence - Titre', type: 'text' },
+      { key: 'engagement_transparency_desc', label: '✅ Transparence - Description', type: 'textarea' },
+      { key: 'engagement_proximity_title', label: '👥 Proximité - Titre', type: 'text' },
+      { key: 'engagement_proximity_desc', label: '👥 Proximité - Description', type: 'textarea' },
+      { key: 'engagement_support_title', label: '🎧 Support - Titre', type: 'text' },
+      { key: 'engagement_support_desc', label: '🎧 Support - Description', type: 'textarea' },
+      { key: 'engagement_network_title', label: '🌍 Réseau - Titre', type: 'text' },
+      { key: 'engagement_network_desc', label: '🌍 Réseau - Description', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'infrastructure',
+    label: '🏗️ Atouts - 4 Infrastructure',
+    description: 'Cartes "Notre infrastructure" (véhicules, installations, entrepôts, outils)',
+    fields: [
+      { key: 'infra_vehicles_title', label: '🚛 Véhicules - Titre', type: 'text' },
+      { key: 'infra_vehicles_desc', label: '🚛 Véhicules - Description', type: 'textarea' },
+      { key: 'infra_facilities_title', label: '🏢 Installations - Titre', type: 'text' },
+      { key: 'infra_facilities_desc', label: '🏢 Installations - Description', type: 'textarea' },
+      { key: 'infra_warehouses_title', label: '🏭 Entrepôts - Titre', type: 'text' },
+      { key: 'infra_warehouses_desc', label: '🏭 Entrepôts - Description', type: 'textarea' },
+      { key: 'infra_tools_title', label: '💻 Outils - Titre', type: 'text' },
+      { key: 'infra_tools_desc', label: '💻 Outils - Description', type: 'textarea' },
+    ],
+  },
+  {
     key: 'realisations',
     label: '📸 Page Réalisations',
     description: 'Titre et description de la page portfolio',
@@ -157,21 +191,37 @@ const SiteContentManager = () => {
 
   useEffect(() => { fetchContent(); }, []);
 
-  const getValue = (key: string): string => contentMap[key]?.content || '';
+  // Show draft value if pending, else live content
+  const getValue = (key: string): string => {
+    const row = contentMap[key];
+    if (!row) return '';
+    return row.has_draft && row.draft_content !== null ? row.draft_content : (row.content || '');
+  };
+  const isDraft = (key: string): boolean => !!contentMap[key]?.has_draft;
 
   const handleSave = async (field: Field, value: string) => {
     setSaving(field.key);
     const existing = contentMap[field.key];
     if (existing) {
       await supabase.from('site_content').update({
-        content: value, title: field.label, updated_by: user?.id,
+        draft_content: value,
+        has_draft: true,
+        draft_updated_at: new Date().toISOString(),
+        draft_updated_by: user?.id,
+        title: field.label,
       }).eq('id', existing.id);
     } else {
       await supabase.from('site_content').insert({
-        section_key: field.key, content: value, title: field.label, updated_by: user?.id,
+        section_key: field.key,
+        content: '',
+        draft_content: value,
+        has_draft: true,
+        draft_updated_at: new Date().toISOString(),
+        draft_updated_by: user?.id,
+        title: field.label,
       });
     }
-    toast({ title: '✅ Sauvegardé', description: field.label });
+    toast({ title: '📝 Brouillon sauvegardé', description: `${field.label} — cliquez sur "Publier" en haut pour mettre en ligne.` });
     setSaving(null);
     fetchContent();
   };
@@ -294,6 +344,7 @@ const SiteContentManager = () => {
                     key={field.key}
                     field={field}
                     value={getValue(field.key)}
+                    isDraft={isDraft(field.key)}
                     onSave={(value) => handleSave(field, value)}
                     onReset={() => handleReset(field)}
                     saving={saving === field.key}
@@ -313,6 +364,7 @@ const SiteContentManager = () => {
 interface FieldEditorProps {
   field: Field;
   value: string;
+  isDraft?: boolean;
   onSave: (value: string) => void;
   onReset: () => void;
   saving: boolean;
@@ -320,7 +372,7 @@ interface FieldEditorProps {
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImageUpload }: FieldEditorProps) => {
+const FieldEditor = ({ field, value, isDraft, onSave, onReset, saving, uploading, onImageUpload }: FieldEditorProps) => {
   const [localValue, setLocalValue] = useState(value);
   const [dirty, setDirty] = useState(false);
 
@@ -334,12 +386,13 @@ const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImage
     <Type className="h-4 w-4" />;
 
   return (
-    <div className={`border rounded-lg p-4 transition-colors ${dirty ? 'border-accent bg-accent/5' : 'border-border'}`}>
+    <div className={`border rounded-lg p-4 transition-colors ${dirty ? 'border-accent bg-accent/5' : isDraft ? 'border-orange-400 bg-orange-50/30' : 'border-border'}`}>
       <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
         <label className="flex items-center gap-2 text-sm font-medium text-foreground">
           {icon}
           {field.label}
           {dirty && <span className="text-xs text-accent">● modifié</span>}
+          {!dirty && isDraft && <span className="text-xs px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300">Brouillon</span>}
         </label>
         <div className="flex gap-1.5">
           {field.defaultValue && (

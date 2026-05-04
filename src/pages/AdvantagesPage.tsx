@@ -14,19 +14,19 @@ const AdvantagesPage = () => {
   const satisfaction = useCountUp(98, 2000);
 
   const engagements = [
-    { icon: Clock, title: t('why.reactivity.title'), description: t('why.reactivity.desc') },
-    { icon: Shield, title: t('why.reliability.title'), description: t('why.reliability.desc') },
-    { icon: CheckCircle, title: t('why.transparency.title'), description: t('why.transparency.desc') },
-    { icon: Users, title: t('why.proximity.title'), description: t('why.proximity.desc') },
-    { icon: Headphones, title: t('why.support.title'), description: t('why.support.desc') },
-    { icon: Globe, title: t('why.network.title'), description: t('why.network.desc') },
+    { key: 'reactivity', icon: Clock, defaultTitle: t('why.reactivity.title'), defaultDesc: t('why.reactivity.desc') },
+    { key: 'reliability', icon: Shield, defaultTitle: t('why.reliability.title'), defaultDesc: t('why.reliability.desc') },
+    { key: 'transparency', icon: CheckCircle, defaultTitle: t('why.transparency.title'), defaultDesc: t('why.transparency.desc') },
+    { key: 'proximity', icon: Users, defaultTitle: t('why.proximity.title'), defaultDesc: t('why.proximity.desc') },
+    { key: 'support', icon: Headphones, defaultTitle: t('why.support.title'), defaultDesc: t('why.support.desc') },
+    { key: 'network', icon: Globe, defaultTitle: t('why.network.title'), defaultDesc: t('why.network.desc') },
   ];
 
   const infrastructure = [
-    { icon: Truck, title: t('advantages.vehicles'), description: t('advantages.vehiclesDesc') },
-    { icon: Building, title: t('advantages.facilities'), description: t('advantages.facilitiesDesc') },
-    { icon: Warehouse, title: t('advantages.warehouses'), description: t('advantages.warehousesDesc') },
-    { icon: Monitor, title: t('advantages.tools'), description: t('advantages.toolsDesc') },
+    { key: 'vehicles', icon: Truck, defaultTitle: t('advantages.vehicles'), defaultDesc: t('advantages.vehiclesDesc') },
+    { key: 'facilities', icon: Building, defaultTitle: t('advantages.facilities'), defaultDesc: t('advantages.facilitiesDesc') },
+    { key: 'warehouses', icon: Warehouse, defaultTitle: t('advantages.warehouses'), defaultDesc: t('advantages.warehousesDesc') },
+    { key: 'tools', icon: Monitor, defaultTitle: t('advantages.tools'), defaultDesc: t('advantages.toolsDesc') },
   ];
 
   return (
@@ -69,12 +69,16 @@ const AdvantagesPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {engagements.map((item, index) => (
-              <motion.div key={item.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5, scale: 1.02 }} className="group p-6 rounded-xl border border-border hover:border-accent/50 hover:shadow-lg bg-card transition-all duration-300">
+              <motion.div key={item.key} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -5, scale: 1.02 }} className="group p-6 rounded-xl border border-border hover:border-accent/50 hover:shadow-lg bg-card transition-all duration-300">
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:rotate-6 transition-all duration-300">
                   <item.icon className="h-6 w-6 text-primary group-hover:text-accent transition-colors" />
                 </div>
-                <h3 className="font-heading text-xl font-bold text-card-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                <h3 className="font-heading text-xl font-bold text-card-foreground mb-2">
+                  <EditableText contentKey={`engagement_${item.key}_title`} fallback={item.defaultTitle} label={`Engagement ${item.key} - Titre`} />
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  <EditableText contentKey={`engagement_${item.key}_desc`} fallback={item.defaultDesc} label={`Engagement ${item.key} - Description`} multiline as="span" />
+                </p>
               </motion.div>
             ))}
           </div>
@@ -90,12 +94,16 @@ const AdvantagesPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {infrastructure.map((item, index) => (
-              <motion.div key={item.title} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.05 }} className="bg-card rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300">
+              <motion.div key={item.key} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ scale: 1.05 }} className="bg-card rounded-2xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300">
                 <div className="h-16 w-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-5">
                   <item.icon className="h-8 w-8 text-accent" />
                 </div>
-                <h3 className="font-heading text-lg font-bold text-card-foreground mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">{item.description}</p>
+                <h3 className="font-heading text-lg font-bold text-card-foreground mb-2">
+                  <EditableText contentKey={`infra_${item.key}_title`} fallback={item.defaultTitle} label={`Infrastructure ${item.key} - Titre`} />
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  <EditableText contentKey={`infra_${item.key}_desc`} fallback={item.defaultDesc} label={`Infrastructure ${item.key} - Description`} multiline as="span" />
+                </p>
               </motion.div>
             ))}
           </div>

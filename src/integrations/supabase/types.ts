@@ -331,6 +331,10 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
+          draft_content: string | null
+          draft_updated_at: string | null
+          draft_updated_by: string | null
+          has_draft: boolean
           id: string
           image_url: string | null
           metadata: Json | null
@@ -342,6 +346,10 @@ export type Database = {
         Insert: {
           content?: string | null
           created_at?: string
+          draft_content?: string | null
+          draft_updated_at?: string | null
+          draft_updated_by?: string | null
+          has_draft?: boolean
           id?: string
           image_url?: string | null
           metadata?: Json | null
@@ -353,6 +361,10 @@ export type Database = {
         Update: {
           content?: string | null
           created_at?: string
+          draft_content?: string | null
+          draft_updated_at?: string | null
+          draft_updated_by?: string | null
+          has_draft?: boolean
           id?: string
           image_url?: string | null
           metadata?: Json | null
@@ -458,6 +470,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      discard_all_drafts: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -465,6 +478,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      publish_all_drafts: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
