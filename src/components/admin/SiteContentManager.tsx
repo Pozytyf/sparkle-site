@@ -330,6 +330,7 @@ const SiteContentManager = () => {
 interface FieldEditorProps {
   field: Field;
   value: string;
+  isDraft?: boolean;
   onSave: (value: string) => void;
   onReset: () => void;
   saving: boolean;
@@ -337,7 +338,7 @@ interface FieldEditorProps {
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImageUpload }: FieldEditorProps) => {
+const FieldEditor = ({ field, value, isDraft, onSave, onReset, saving, uploading, onImageUpload }: FieldEditorProps) => {
   const [localValue, setLocalValue] = useState(value);
   const [dirty, setDirty] = useState(false);
 
@@ -351,12 +352,13 @@ const FieldEditor = ({ field, value, onSave, onReset, saving, uploading, onImage
     <Type className="h-4 w-4" />;
 
   return (
-    <div className={`border rounded-lg p-4 transition-colors ${dirty ? 'border-accent bg-accent/5' : 'border-border'}`}>
+    <div className={`border rounded-lg p-4 transition-colors ${dirty ? 'border-accent bg-accent/5' : isDraft ? 'border-orange-400 bg-orange-50/30' : 'border-border'}`}>
       <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
         <label className="flex items-center gap-2 text-sm font-medium text-foreground">
           {icon}
           {field.label}
           {dirty && <span className="text-xs text-accent">● modifié</span>}
+          {!dirty && isDraft && <span className="text-xs px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300">Brouillon</span>}
         </label>
         <div className="flex gap-1.5">
           {field.defaultValue && (
