@@ -1,1 +1,12 @@
 project_id = "qdbbltkqldzuwxecfhin"
+
+[auth]
+site_url = "https://hp-logistics.net"
+additional_redirect_urls = [
+  "https://hp-logistics.net",
+  "https://hp-logistics.net/**",
+  "https://www.hp-logistics.net",
+  "https://www.hp-logistics.net/**",
+  "https://id-preview--0bda9a19-db62-445d-b9c3-cd004dfbf305.lovable.app/**",
+  "http://localhost:5173/**"
+]
