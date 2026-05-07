@@ -11,6 +11,7 @@ const WhyChooseUs = lazy(() => import('@/components/home/WhyChooseUs'));
 const TestimonialsSection = lazy(() => import('@/components/home/TestimonialsSection'));
 const PartnersMarquee = lazy(() => import('@/components/home/PartnersMarquee'));
 const CTASection = lazy(() => import('@/components/home/CTASection'));
+const FeaturedCarousel = lazy(() => import('@/components/home/FeaturedCarousel'));
 
 const Index = () => {
   return (
@@ -25,6 +26,7 @@ const Index = () => {
           </div>
         </ParallaxDivider>
         <WhyChooseUs />
+        <FeaturedCarousel />
         <ParallaxDivider imageUrl={serviceAir} height="200px" overlayOpacity={0.75} />
         <PartnersMarquee />
         <TestimonialsSection />
