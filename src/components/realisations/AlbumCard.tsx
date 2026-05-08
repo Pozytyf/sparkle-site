@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Camera, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AlbumCardProps {
   id: string;
@@ -12,13 +13,8 @@ interface AlbumCardProps {
 }
 
 const AlbumCard = ({ title, description, category, coverImageUrl, photoCount, onClick }: AlbumCardProps) => {
-  const categoryLabels: Record<string, string> = {
-    chantier: 'Chantier',
-    transport: 'Transport',
-    entrepot: 'Entrepôt',
-    installation: 'Installation',
-    livraison: 'Livraison',
-  };
+  const { t } = useLanguage();
+  const categoryLabel = category ? t(`album.cat.${category}`) : '';
 
   return (
     <motion.div
@@ -47,18 +43,18 @@ const AlbumCard = ({ title, description, category, coverImageUrl, photoCount, on
             initial={false}
             className="flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg"
           >
-            Voir l'album <ArrowRight className="h-4 w-4" />
+            {t('album.view')} <ArrowRight className="h-4 w-4" />
           </motion.div>
         </div>
         {/* Category badge */}
         {category && (
           <span className="absolute top-3 left-3 bg-accent/90 text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">
-            {categoryLabels[category] || category}
+            {categoryLabel || category}
           </span>
         )}
         {/* Photo count */}
         <span className="absolute bottom-3 right-3 bg-background/80 backdrop-blur-sm text-foreground text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5">
-          <Camera className="h-3.5 w-3.5" /> {photoCount} photo{photoCount !== 1 ? 's' : ''}
+          <Camera className="h-3.5 w-3.5" /> {photoCount} {photoCount !== 1 ? t('album.photos') : t('album.photo')}
         </span>
       </div>
       <div className="p-5">

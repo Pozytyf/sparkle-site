@@ -3,6 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Sparkles, AlertCircle } from 'lucide-react';
 import { useSiteContent } from '@/hooks/useSiteContent';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { EditableText } from '@/components/cms/EditableText';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHeroSlides, type HeroSlide } from '@/hooks/useHeroSlides';
@@ -11,15 +12,15 @@ import serviceAir from '@/assets/service-air.jpg';
 import serviceRoad from '@/assets/service-road.jpg';
 import serviceRail from '@/assets/service-rail.jpg';
 
-const fallbackSlides: HeroSlide[] = [
-  { id: 'f1', image_url: serviceMaritime, title: 'Maritime' },
-  { id: 'f2', image_url: serviceAir, title: 'Aérien' },
-  { id: 'f3', image_url: serviceRoad, title: 'Routier' },
-  { id: 'f4', image_url: serviceRail, title: 'Ferroviaire' },
-];
-
 const FeaturedCarousel = () => {
   const { c } = useSiteContent();
+  const { t } = useLanguage();
+  const fallbackSlides: HeroSlide[] = [
+    { id: 'f1', image_url: serviceMaritime, title: t('transport.maritime') },
+    { id: 'f2', image_url: serviceAir, title: t('transport.air') },
+    { id: 'f3', image_url: serviceRoad, title: t('transport.road') },
+    { id: 'f4', image_url: serviceRail, title: t('transport.rail') },
+  ];
   const { data, isLoading, error } = useHeroSlides();
   const slides: HeroSlide[] = data && data.length > 0 ? data : fallbackSlides;
 
@@ -52,13 +53,13 @@ const FeaturedCarousel = () => {
         >
           <span className="inline-flex items-center gap-2 text-accent font-semibold text-sm uppercase tracking-wider mb-3">
             <Sparkles className="h-4 w-4" />
-            <EditableText contentKey="featured_badge" fallback="En vedette" label="Carrousel - Badge" />
+            <EditableText contentKey="featured_badge" fallback={t('featured.badge')} label="Carrousel - Badge" />
           </span>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-3">
-            <EditableText contentKey="featured_title" fallback="Nos réalisations en images" label="Carrousel - Titre" />
+            <EditableText contentKey="featured_title" fallback={t('featured.title')} label="Carrousel - Titre" />
           </h2>
           <p className="text-muted-foreground text-lg">
-            <EditableText contentKey="featured_subtitle" fallback="Un aperçu de l'expertise HP LOGISTICS au quotidien." label="Carrousel - Sous-titre" multiline />
+            <EditableText contentKey="featured_subtitle" fallback={t('featured.subtitle')} label="Carrousel - Sous-titre" multiline />
           </p>
         </motion.div>
 
@@ -66,8 +67,8 @@ const FeaturedCarousel = () => {
           <div className="max-w-xl mx-auto mb-6 flex items-start gap-3 p-4 rounded-xl border border-destructive/30 bg-destructive/5 text-sm text-destructive">
             <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold">Impossible de charger les visuels</p>
-              <p className="text-destructive/80">Affichage des images par défaut.</p>
+              <p className="font-semibold">{t('featured.errorTitle')}</p>
+              <p className="text-destructive/80">{t('featured.errorDesc')}</p>
             </div>
           </div>
         )}
@@ -123,7 +124,7 @@ const FeaturedCarousel = () => {
                     {String(selected + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
                   </div>
                   <h3 className="font-heading text-2xl md:text-3xl font-bold drop-shadow-lg">
-                    {current?.title || c('featured_default_title', 'Solution logistique')}
+                    {current?.title || c('featured_default_title', t('featured.defaultTitle'))}
                   </h3>
                 </motion.div>
               </AnimatePresence>
@@ -131,14 +132,14 @@ const FeaturedCarousel = () => {
 
             <button
               onClick={scrollPrev}
-              aria-label="Précédent"
+              aria-label={t('common.prev')}
               className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-110 transition-all z-20"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={scrollNext}
-              aria-label="Suivant"
+              aria-label={t('common.next')}
               className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-accent hover:text-accent-foreground hover:scale-110 transition-all z-20"
             >
               <ChevronRight className="h-5 w-5" />
@@ -149,7 +150,7 @@ const FeaturedCarousel = () => {
                 <button
                   key={i}
                   onClick={() => emblaApi?.scrollTo(i)}
-                  aria-label={`Aller au slide ${i + 1}`}
+                  aria-label={`${t('common.goToSlide')} ${i + 1}`}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     selected === i ? 'w-8 bg-accent' : 'w-2 bg-border hover:bg-muted-foreground/40'
                   }`}

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Photo {
   id: string;
@@ -18,6 +19,7 @@ interface AlbumDetailProps {
 }
 
 const AlbumDetail = ({ albumId, albumTitle, onClose }: AlbumDetailProps) => {
+  const { t } = useLanguage();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -72,7 +74,7 @@ const AlbumDetail = ({ albumId, albumTitle, onClose }: AlbumDetailProps) => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <button onClick={onClose} className="text-sm text-muted-foreground hover:text-accent transition-colors mb-2 flex items-center gap-1">
-                <ChevronLeft className="h-4 w-4" /> Retour
+                <ChevronLeft className="h-4 w-4" /> {t('common.back')}
               </button>
               <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">{albumTitle}</h2>
             </div>
@@ -88,7 +90,7 @@ const AlbumDetail = ({ albumId, albumTitle, onClose }: AlbumDetailProps) => {
           ) : photos.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground">
               <Camera className="h-16 w-16 mx-auto mb-4 opacity-30" />
-              <p>Aucune photo dans cet album.</p>
+              <p>{t('album.empty')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
