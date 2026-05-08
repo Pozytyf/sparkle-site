@@ -29,7 +29,7 @@ const categories = [
 
 const AlbumGrid = ({ albums, onAlbumClick }: AlbumGridProps) => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   const filtered = activeCategory === 'all'
     ? albums
