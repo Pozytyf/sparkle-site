@@ -21,7 +21,7 @@ interface Album {
 }
 
 const RealisationsPage = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedAlbum, setSelectedAlbum] = useState<{ id: string; title: string } | null>(null);
@@ -64,17 +64,15 @@ const RealisationsPage = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/90 text-accent-foreground text-sm font-semibold rounded-full mb-6">
               <Camera className="h-4 w-4" />
-              <EditableText contentKey="realisations_badge" fallback={language === 'fr' ? 'Nos Réalisations' : 'Our Projects'} label="Badge Réalisations" />
+              <EditableText contentKey="realisations_badge" fallback={t('realisations.badge')} label="Badge Réalisations" />
             </span>
             <h1 className="font-heading text-3xl md:text-5xl font-bold text-primary-foreground mb-4">
-              <EditableText contentKey="realisations_title" fallback={language === 'fr' ? 'Découvrez nos réalisations' : 'Discover our projects'} label="Titre Réalisations" />
+              <EditableText contentKey="realisations_title" fallback={t('realisations.title')} label="Titre Réalisations" />
             </h1>
             <p className="text-primary-foreground/80 text-lg max-w-2xl">
               <EditableText
                 contentKey="realisations_description"
-                fallback={language === 'fr'
-                  ? 'Explorez nos chantiers, livraisons et installations à travers nos albums photos. Chaque projet témoigne de notre expertise et de notre engagement qualité.'
-                  : 'Explore our construction sites, deliveries and installations through our photo albums. Each project reflects our expertise and commitment to quality.'}
+                fallback={t('realisations.description')}
                 label="Description Réalisations" multiline as="span"
               />
             </p>
@@ -101,12 +99,10 @@ const RealisationsPage = () => {
             <div className="text-center py-20">
               <Camera className="h-20 w-20 mx-auto text-muted-foreground/30 mb-6" />
               <h2 className="font-heading text-2xl font-bold text-foreground mb-2">
-                {language === 'fr' ? 'Bientôt disponible' : 'Coming soon'}
+                {t('realisations.comingSoon')}
               </h2>
               <p className="text-muted-foreground">
-                {language === 'fr'
-                  ? 'Nos albums de réalisations seront bientôt en ligne.'
-                  : 'Our project albums will be online soon.'}
+                {t('realisations.comingSoonDesc')}
               </p>
             </div>
           ) : (

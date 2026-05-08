@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { MessageSquareQuote, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 /**
  * Sticky CTA that fades in once the user has scrolled past the hero,
@@ -13,6 +14,7 @@ const StickyCTA = () => {
   const [dismissed, setDismissed] = useState(false);
   const { pathname } = useLocation();
   const { isAdmin } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 600);
@@ -43,11 +45,11 @@ const StickyCTA = () => {
             className="group flex items-center gap-2 rounded-full bg-accent text-accent-foreground pl-4 pr-5 py-3 shadow-2xl shadow-accent/40 hover:scale-105 transition-transform"
           >
             <MessageSquareQuote className="h-5 w-5 group-hover:rotate-[-8deg] transition-transform" />
-            <span className="font-semibold text-sm">Demander un devis</span>
+            <span className="font-semibold text-sm">{t('sticky.cta')}</span>
           </Link>
           <button
             onClick={() => setDismissed(true)}
-            aria-label="Fermer"
+            aria-label={t('sticky.close')}
             className="h-8 w-8 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground shadow-md flex items-center justify-center"
           >
             <X className="h-4 w-4" />
