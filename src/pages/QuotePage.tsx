@@ -11,16 +11,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { EditableText } from '@/components/cms/EditableText';
 
-const transportModes = [
-  { value: 'maritime', icon: Ship, label: 'Maritime' },
-  { value: 'aerien', icon: Plane, label: 'Aérien' },
-  { value: 'routier', icon: Truck, label: 'Routier' },
-  { value: 'ferroviaire', icon: Train, label: 'Ferroviaire' },
-  { value: 'multimodal', icon: ArrowRightLeft, label: 'Multimodal' },
-];
-
 const QuotePage = () => {
   const { t } = useLanguage();
+  const transportModes = [
+    { value: 'maritime', icon: Ship, label: t('transport.maritime') },
+    { value: 'aerien', icon: Plane, label: t('transport.air') },
+    { value: 'routier', icon: Truck, label: t('transport.road') },
+    { value: 'ferroviaire', icon: Train, label: t('transport.rail') },
+    { value: 'multimodal', icon: ArrowRightLeft, label: t('transport.multimodal') },
+  ];
   const { user } = useAuth();
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);

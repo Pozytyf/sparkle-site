@@ -19,17 +19,17 @@ interface AlbumGridProps {
 }
 
 const categories = [
-  { key: 'all', label: { fr: 'Tous', en: 'All' } },
-  { key: 'chantier', label: { fr: 'Chantier', en: 'Construction' } },
-  { key: 'transport', label: { fr: 'Transport', en: 'Transport' } },
-  { key: 'entrepot', label: { fr: 'Entrepôt', en: 'Warehouse' } },
-  { key: 'installation', label: { fr: 'Installation', en: 'Installation' } },
-  { key: 'livraison', label: { fr: 'Livraison', en: 'Delivery' } },
+  { key: 'all', tKey: 'album.cat.all' },
+  { key: 'chantier', tKey: 'album.cat.chantier' },
+  { key: 'transport', tKey: 'album.cat.transport' },
+  { key: 'entrepot', tKey: 'album.cat.entrepot' },
+  { key: 'installation', tKey: 'album.cat.installation' },
+  { key: 'livraison', tKey: 'album.cat.livraison' },
 ];
 
 const AlbumGrid = ({ albums, onAlbumClick }: AlbumGridProps) => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
 
   const filtered = activeCategory === 'all'
     ? albums
@@ -47,7 +47,7 @@ const AlbumGrid = ({ albums, onAlbumClick }: AlbumGridProps) => {
             onClick={() => setActiveCategory(cat.key)}
             className="rounded-full"
           >
-            {cat.label[language]}
+            {t(cat.tKey)}
           </Button>
         ))}
       </div>
@@ -64,7 +64,7 @@ const AlbumGrid = ({ albums, onAlbumClick }: AlbumGridProps) => {
         >
           {filtered.length === 0 ? (
             <div className="col-span-full text-center py-16 text-muted-foreground">
-              {language === 'fr' ? 'Aucun album dans cette catégorie.' : 'No albums in this category.'}
+              {t('album.empty.category')}
             </div>
           ) : (
             filtered.map((album) => (
