@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Ship, Plane, Truck, Train, ArrowRightLeft } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -52,6 +53,7 @@ const QuotePage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.quote.title" descKey="seo.quote.desc" path="/devis" />
       <section className="relative pt-32 pb-10 bg-primary overflow-hidden">
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">

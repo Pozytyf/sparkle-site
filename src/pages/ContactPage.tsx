@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -56,6 +57,7 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.contact.title" descKey="seo.contact.desc" path="/contact" />
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-10">

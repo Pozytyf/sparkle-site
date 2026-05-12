@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
@@ -32,6 +33,7 @@ const LoginPage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.login.title" descKey="seo.login.desc" path="/login" />
       <section className="relative pt-32 pb-20 bg-primary overflow-hidden">
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">

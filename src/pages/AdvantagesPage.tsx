@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Clock, Users, CheckCircle, Headphones, Globe, Truck, Building, Warehouse, Monitor } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCountUp } from '@/hooks/useCountUp';
@@ -31,6 +32,7 @@ const AdvantagesPage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.advantages.title" descKey="seo.advantages.desc" path="/atouts" />
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-10">

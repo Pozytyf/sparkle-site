@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import PageSkeleton from '@/components/PageSkeleton';
 import ParallaxDivider from '@/components/ParallaxDivider';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -18,6 +19,7 @@ const Index = () => {
   const { t } = useLanguage();
   return (
     <Layout>
+      <Seo titleKey="seo.home.title" descKey="seo.home.desc" path="/" />
       <Suspense fallback={<PageSkeleton />}>
         <HeroSection />
         <ServicesOverview />
