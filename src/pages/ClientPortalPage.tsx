@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Package, MapPin, Clock, Ship, Plane, Truck, Train, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -70,6 +71,7 @@ const ClientPortalPage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.portal.title" descKey="seo.portal.desc" path="/espace-client" />
       <section className="relative pt-32 pb-10 bg-primary overflow-hidden">
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">

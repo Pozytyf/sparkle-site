@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Camera } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
+import Seo from '@/components/Seo';
 import AlbumGrid from '@/components/realisations/AlbumGrid';
 import AlbumDetail from '@/components/realisations/AlbumDetail';
 import ParallaxHero from '@/components/ParallaxHero';
@@ -53,6 +54,7 @@ const RealisationsPage = () => {
 
   return (
     <Layout>
+      <Seo titleKey="seo.realisations.title" descKey="seo.realisations.desc" path="/realisations" />
       {/* Hero */}
       <section className="relative pt-32 pb-16 bg-primary overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-90" />
