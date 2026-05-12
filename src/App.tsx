@@ -19,6 +19,8 @@ import AdminPage from "./pages/AdminPage";
 import RealisationsPage from "./pages/RealisationsPage";
 import QuotePage from "./pages/QuotePage";
 import ClientPortalPage from "./pages/ClientPortalPage";
+import LegalPage from "./pages/LegalPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +47,8 @@ const App = () => (
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminPage /></ProtectedRoute>} />
+              <Route path="/mentions-legales" element={<LegalPage />} />
+              <Route path="/confidentialite" element={<PrivacyPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

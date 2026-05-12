@@ -118,8 +118,8 @@ const Footer = () => {
             © {new Date().getFullYear()} HP LOGISTICS. {t('footer.rights')}
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-primary-foreground/60 hover:text-accent text-sm transition-colors">{t('footer.privacy')}</a>
-            <a href="#" className="text-primary-foreground/60 hover:text-accent text-sm transition-colors">{t('footer.legal')}</a>
+            <Link to="/confidentialite" className="text-primary-foreground/60 hover:text-accent text-sm transition-colors">{t('footer.privacy')}</Link>
+            <Link to="/mentions-legales" className="text-primary-foreground/60 hover:text-accent text-sm transition-colors">{t('footer.legal')}</Link>
           </div>
         </div>
       </div>
