@@ -29,6 +29,17 @@ const setMeta = (selector: string, attr: string, value: string) => {
   el.setAttribute(attr, value);
 };
 
+const setHreflang = (hreflang: string, href: string) => {
+  let el = document.head.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hreflang}"]`);
+  if (!el) {
+    el = document.createElement('link');
+    el.rel = 'alternate';
+    el.setAttribute('hreflang', hreflang);
+    document.head.appendChild(el);
+  }
+  el.href = href;
+};
+
 const Seo = ({ titleKey, descKey, path = '/', image }: SeoProps) => {
   const { t, language } = useLanguage();
 
@@ -45,10 +56,17 @@ const Seo = ({ titleKey, descKey, path = '/', image }: SeoProps) => {
     setMeta('meta[property="og:url"]', 'content', url);
     setMeta('meta[property="og:type"]', 'content', 'website');
     setMeta('meta[property="og:locale"]', 'content', language === 'fr' ? 'fr_FR' : 'en_US');
+    setMeta('meta[property="og:locale:alternate"]', 'content', language === 'fr' ? 'en_US' : 'fr_FR');
     if (image) setMeta('meta[property="og:image"]', 'content', image);
     setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
     setMeta('meta[name="twitter:title"]', 'content', title);
     setMeta('meta[name="twitter:description"]', 'content', desc);
+    // hreflang multilingual SEO — same URL serves both languages (client-side i18n)
+    setHreflang('fr', url);
+    setHreflang('fr-FR', url);
+    setHreflang('en', url);
+    setHreflang('en-US', url);
+    setHreflang('x-default', url);
   }, [titleKey, descKey, path, image, language, t]);
 
   return null;

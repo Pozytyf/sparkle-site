@@ -336,6 +336,13 @@ const translations: Record<Language, Record<string, string>> = {
     'privacy.rights.body': 'Conformément au RGPD, vous disposez d\'un droit d\'accès, de rectification, d\'effacement, de portabilité et d\'opposition sur vos données.\nPour exercer ces droits, contactez-nous à : info@hp-logistics.net',
     'privacy.contact.title': 'Contact',
     'privacy.contact.body': 'Pour toute question relative à la protection de vos données personnelles, écrivez-nous à info@hp-logistics.net ou par courrier à HP LOGISTICS, Abidjan Marcory, Allée Oumé, Côte d\'Ivoire.',
+    // Cookie banner
+    'cookies.title': 'Respect de votre vie privée',
+    'cookies.description': 'Nous utilisons uniquement des cookies essentiels au bon fonctionnement du site. Aucun cookie publicitaire n\'est déposé sans votre accord.',
+    'cookies.accept': 'Accepter',
+    'cookies.refuse': 'Refuser',
+    'cookies.learnMore': 'En savoir plus',
+    'cookies.close': 'Fermer',
   },
   en: {
     'nav.home': 'Home',
@@ -664,6 +671,13 @@ const translations: Record<Language, Record<string, string>> = {
     'privacy.rights.body': 'In accordance with the GDPR, you have the right to access, rectify, delete, port and object to your data.\nTo exercise these rights, contact us at: info@hp-logistics.net',
     'privacy.contact.title': 'Contact',
     'privacy.contact.body': 'For any question regarding the protection of your personal data, write to us at info@hp-logistics.net or by mail to HP LOGISTICS, Abidjan Marcory, Allée Oumé, Côte d\'Ivoire.',
+    // Cookie banner
+    'cookies.title': 'Your privacy matters',
+    'cookies.description': 'We only use essential cookies needed for the site to work properly. No advertising cookies are stored without your consent.',
+    'cookies.accept': 'Accept',
+    'cookies.refuse': 'Refuse',
+    'cookies.learnMore': 'Learn more',
+    'cookies.close': 'Close',
   },
 };
 
