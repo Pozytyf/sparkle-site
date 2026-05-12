@@ -19,10 +19,6 @@ const LegalPage = () => {
                 <p className="whitespace-pre-line">{t('legal.editor.body')}</p>
               </section>
               <section>
-                <h2 className="font-heading text-2xl text-foreground">{t('legal.hosting.title')}</h2>
-                <p className="whitespace-pre-line">{t('legal.hosting.body')}</p>
-              </section>
-              <section>
                 <h2 className="font-heading text-2xl text-foreground">{t('legal.ip.title')}</h2>
                 <p>{t('legal.ip.body')}</p>
               </section>
